@@ -27,6 +27,8 @@ export default defineType({
     defineField({name: 'vendor', title: 'Vendor', type: 'reference', to: [{type: 'vendor'}], group: 'identity'}),
     defineField({name: 'logo', title: 'Logo', type: 'image', group: 'identity', options: {hotspot: false}}),
     defineField({name: 'oneLineDescription', title: 'One-line description', type: 'text', rows: 2, group: 'identity', validation: (r) => r.required()}),
+    defineField({name: 'tagline', title: 'Tagline (short)', type: 'string', group: 'identity', description: 'Short line under the tool name on the landing page. Falls back to the description.'}),
+    defineField({name: 'videoUrl', title: 'Demo video (YouTube URL)', type: 'url', group: 'identity', description: 'Embedded as a demo in the "What is" section. Leave empty to show a link to the official site.'}),
     defineField({name: 'formerNames', title: 'Former names / aliases', type: 'array', of: [{type: 'string'}], group: 'identity', description: 'Search aliases so rebrands still resolve (e.g. "Leadfeeder" -> Dealfront).'}),
 
     /* ---- Classification ---- */
@@ -50,6 +52,8 @@ export default defineType({
     defineField({name: 'bestFit', title: 'Best-fit classification', type: 'bestFit', group: 'verdict'}),
     defineField({name: 'strengths', title: 'Strengths', type: 'array', of: [{type: 'string'}], group: 'verdict'}),
     defineField({name: 'limitations', title: 'Limitations', type: 'array', of: [{type: 'string'}], group: 'verdict'}),
+    defineField({name: 'idealCustomer', title: 'Ideal Customer Profile', type: 'text', rows: 3, group: 'verdict', description: 'Who the tool is best for. Shown in the ICP section; falls back to a derived sentence.'}),
+    defineField({name: 'easeOfUse', title: 'Ease of use (0-100)', type: 'number', group: 'verdict', validation: (r) => r.min(0).max(100), description: 'Drives the "Is it easy to use?" gauge (80+ = Easy, 65-79 = Moderate, below = Advanced).'}),
 
     /* ---- Capabilities & pricing ---- */
     defineField({name: 'capabilities', title: 'Capabilities', type: 'array', of: [{type: 'capability'}], group: 'capabilities'}),

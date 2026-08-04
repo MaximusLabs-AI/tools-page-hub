@@ -21,8 +21,12 @@ const vtag = (s: FeatureStatus) =>
   : s === 'integration-dependent' ? {cls: 'suite', label: 'Integration-dependent'}
   : {cls: 'unverified', label: s.replace(/-/g, ' ')}
 
-// real demo videos gathered in research (extend as we add more)
+// fallback demo videos gathered in research (used when a tool has no videoUrl in Sanity)
 const VIDEO: Record<string, string> = {'peec-ai': '1O0U0oemB84'}
+function toEmbed(url: string): string | null {
+  const m = url.match(/(?:youtu\.be\/|[?&]v=|embed\/)([\w-]{11})/)
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null
+}
 
 export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools: Tool[]}) {
   const bySlug = new Map(allTools.map((t) => [t.slug, t]))
@@ -35,10 +39,11 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
   const hasFree = tool.pricingPlans.some((p) => p.freePlan)
   const fit = tool.quickVerdict ? FIT_LABEL_TEXT[tool.quickVerdict.fitLabel] : 'Under review'
   const billing = plan ? BILLING[plan.pricingModel] : 'Subscription'
-  const ease = hasFree ? 85 : tool.productType === 'suite_module' ? 60 : 72
+  const ease = tool.easeOfUse ?? (hasFree ? 85 : tool.productType === 'suite_module' ? 60 : 72)
   const easeLabel = ease >= 80 ? 'Easy' : ease >= 65 ? 'Moderate' : 'Advanced'
-  const videoId = VIDEO[tool.slug]
-  const icp = `${tool.name} fits marketing, SEO and growth teams that need ${tool.primaryCategory.name.toLowerCase()}${
+  const videoEmbed = tool.videoUrl ? toEmbed(tool.videoUrl) : VIDEO[tool.slug] ? `https://www.youtube.com/embed/${VIDEO[tool.slug]}` : null
+  const tagline = tool.tagline || tool.oneLineDescription
+  const icp = tool.idealCustomer || `${tool.name} fits marketing, SEO and growth teams that need ${tool.primaryCategory.name.toLowerCase()}${
     hasFree ? ', from solo operators up to agencies' : tool.productType === 'suite_module' ? ', especially existing suite customers' : ', from mid-market teams to agencies'
   }. Rated ${fit.toLowerCase()} for this job.`
 
@@ -59,7 +64,7 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                 <ToolLogo domain={tool.domain} name={tool.name} size={56} radius={14} />
                 <div className="tpcard__id">
                   <h2>{tool.name}</h2>
-                  <p>{tool.oneLineDescription}</p>
+                  <p>{tagline}</p>
                 </div>
                 <div className="tpcard__cta">
                   <a className="btn btn--sky" href={tool.officialUrl} target="_blank" rel="noreferrer">Get started →</a>
@@ -78,8 +83,8 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
               <section className="tsec tsec--flush">
                 <h2>What is {tool.name}?</h2>
                 <p className="lead">{tool.oneLineDescription} It sits in the <b>{tool.primaryCategory.name}</b> category{tool.secondaryCategories.length ? ` and also touches ${tool.secondaryCategories.map((c) => c.name).join(', ')}` : ''}, and MaximusLabs rates it <b>{fit.toLowerCase()}</b> for that job.</p>
-                {videoId ? (
-                  <div className="video"><iframe src={`https://www.youtube.com/embed/${videoId}`} title={`${tool.name} demo`} allowFullScreen loading="lazy" /></div>
+                {videoEmbed ? (
+                  <div className="video"><iframe src={videoEmbed} title={`${tool.name} demo`} allowFullScreen loading="lazy" /></div>
                 ) : (
                   <a className="video video--ph" href={tool.officialUrl} target="_blank" rel="noreferrer"><span className="video__play">▶</span> Watch {tool.name} in action on the official site →</a>
                 )}

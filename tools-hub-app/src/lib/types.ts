@@ -118,6 +118,10 @@ export interface Tool {
   domain: string
   logoUrl?: string
   oneLineDescription: string
+  tagline?: string
+  videoUrl?: string
+  idealCustomer?: string
+  easeOfUse?: number
   productType: ProductType
   status: string
   primaryCategory: Category

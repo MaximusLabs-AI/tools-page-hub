@@ -26,6 +26,10 @@ type RawTool = {
   slug: {current: string}
   officialUrl: string
   oneLineDescription: string
+  tagline?: string
+  videoUrl?: string
+  idealCustomer?: string
+  easeOfUse?: number
   productType: Tool['productType']
   status: string
   primaryCategory: Ref
@@ -91,6 +95,10 @@ function toTool(t: RawTool): Tool {
     officialUrl: t.officialUrl,
     domain: hostname(t.officialUrl),
     oneLineDescription: t.oneLineDescription,
+    tagline: t.tagline,
+    videoUrl: t.videoUrl,
+    idealCustomer: t.idealCustomer,
+    easeOfUse: t.easeOfUse,
     productType: t.productType,
     status: t.status,
     primaryCategory: primary,
