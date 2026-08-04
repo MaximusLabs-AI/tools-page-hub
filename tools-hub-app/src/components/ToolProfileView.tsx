@@ -42,6 +42,7 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
   const ease = tool.easeOfUse ?? (hasFree ? 85 : tool.productType === 'suite_module' ? 60 : 72)
   const easeLabel = ease >= 80 ? 'Easy' : ease >= 65 ? 'Moderate' : 'Advanced'
   const videoEmbed = tool.videoUrl ? toEmbed(tool.videoUrl) : VIDEO[tool.slug] ? `https://www.youtube.com/embed/${VIDEO[tool.slug]}` : null
+  const ytSearch = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${tool.name} demo walkthrough`)}`
   const tagline = tool.tagline || tool.oneLineDescription
   const icp = tool.idealCustomer || `${tool.name} fits marketing, SEO and growth teams that need ${tool.primaryCategory.name.toLowerCase()}${
     hasFree ? ', from solo operators up to agencies' : tool.productType === 'suite_module' ? ', especially existing suite customers' : ', from mid-market teams to agencies'
@@ -83,10 +84,19 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
               <section className="tsec tsec--flush">
                 <h2>What is {tool.name}?</h2>
                 <p className="lead">{tool.oneLineDescription} It sits in the <b>{tool.primaryCategory.name}</b> category{tool.secondaryCategories.length ? ` and also touches ${tool.secondaryCategories.map((c) => c.name).join(', ')}` : ''}, and MaximusLabs rates it <b>{fit.toLowerCase()}</b> for that job.</p>
+                {tool.capabilities.length > 0 && (
+                  <div className="capchips">
+                    {tool.capabilities.slice(0, 10).map((c, i) => (<span className="capchip" key={i}>{c.name}</span>))}
+                  </div>
+                )}
                 {videoEmbed ? (
                   <div className="video"><iframe src={videoEmbed} title={`${tool.name} demo`} allowFullScreen loading="lazy" /></div>
                 ) : (
-                  <a className="video video--ph" href={tool.officialUrl} target="_blank" rel="noreferrer"><span className="video__play">▶</span> Watch {tool.name} in action on the official site →</a>
+                  <a className="video video--poster" href={ytSearch} target="_blank" rel="noreferrer" aria-label={`Watch ${tool.name} walkthroughs on YouTube`}>
+                    <ToolLogo domain={tool.domain} name={tool.name} size={58} radius={14} />
+                    <span className="video__play">▶</span>
+                    <span className="video__cap">Watch {tool.name} walkthroughs on YouTube</span>
+                  </a>
                 )}
               </section>
 
