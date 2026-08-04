@@ -220,3 +220,81 @@
 @media (max-width: 680px) { .feat--tight { grid-template-columns: 1fr; } }
 .fcard--tight { padding: 14px 16px; }
 .fcard--tight p { margin-top: 4px; }
+
+/* ===== ColdIQ-structure tool landing page (Maximus colors) ===== */
+.tpwrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.tpcrumb { padding: 18px 0 6px; font-size: 13px; color: var(--muted); font-weight: 600; }
+.tpcrumb a:hover { color: var(--accent); }
+.tpcrumb b { color: var(--ink); }
+.tptitle { font-size: clamp(24px, 3.4vw, 32px); margin-bottom: 18px; }
+.tp { display: grid; grid-template-columns: 1fr 320px; gap: 30px; align-items: start; }
+@media (max-width: 900px) { .tp { grid-template-columns: 1fr; } }
+.tp__side { position: sticky; top: 80px; display: grid; gap: 14px; }
+@media (max-width: 900px) { .tp__side { position: static; } }
+
+.tpcard { display: flex; align-items: center; gap: 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; box-shadow: var(--shadow); flex-wrap: wrap; }
+.tpcard__id { flex: 1; min-width: 180px; }
+.tpcard__id h2 { font-size: 22px; color: var(--blue); }
+.tpcard__id p { margin: 4px 0 0; font-size: 14px; color: var(--text-2); }
+.tpcard__cta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.tpcard__claim { font-size: 12px; color: var(--muted); }
+.tpcard__claim:hover { color: var(--accent); }
+
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 0; }
+.tag-chip { background: var(--marble); border: 1px solid var(--line); border-radius: 48px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+.tag-chip.cat { background: #eaf3ff; color: var(--accent); border-color: #cfe2fb; }
+.tag-chip.ok { background: var(--success-bg); color: var(--success); border-color: #bfe6d2; }
+.tag-chip.sm { padding: 3px 9px; font-size: 11px; }
+
+.video { position: relative; border-radius: 14px; overflow: hidden; margin-top: 14px; aspect-ratio: 16 / 9; background: var(--navy-2); border: 1px solid var(--line); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video--ph { display: flex; align-items: center; gap: 12px; aspect-ratio: auto; padding: 18px 20px; color: #dceaff; background: var(--grad-cover); font-weight: 600; font-size: 14px; }
+.video__play { width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, .15); display: grid; place-items: center; flex: none; }
+
+.kf { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+@media (max-width: 640px) { .kf { grid-template-columns: 1fr; } }
+.kf__item { display: flex; gap: 10px; }
+.kf__tick { color: var(--success); font-weight: 900; flex: none; }
+.kf__item b { color: var(--blue); font-size: 14.5px; }
+.kf__item p { margin: 3px 0 0; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+
+.pricerow { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 6px; }
+.pricecard { flex: 0 0 260px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.pricecard__nm { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.pricecard__amt { font-size: 24px; font-weight: 900; color: var(--blue); margin: 6px 0 10px; }
+.pricecard ul { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; font-size: 13px; color: var(--text-2); }
+.pricecard ul li::before { content: "✓ "; color: var(--success); font-weight: 800; }
+.pricecard .btn { margin-top: auto; justify-content: center; }
+
+.altlist { display: grid; gap: 12px; }
+.altrow { display: flex; align-items: center; gap: 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: var(--shadow); transition: .18s; }
+.altrow:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: #d3ddf0; }
+.altrow__body { flex: 1; min-width: 0; }
+.altrow__nm { font-weight: 800; color: var(--blue); font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.altrow__rel { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--marble); border-radius: 48px; padding: 2px 8px; }
+.altrow__body p { margin: 3px 0 6px; font-size: 13px; color: var(--text-2); }
+.altrow__tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.altrow__rt { flex: none; }
+@media (max-width: 560px) { .altrow__rt { display: none; } }
+
+.tpx { background: var(--grad-cover); color: #fff; border-radius: 16px; padding: 20px; }
+.tpx__eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); }
+.tpx b { display: block; font-size: 17px; margin: 8px 0 6px; }
+.tpx p { color: #c8dbf5; font-size: 13px; margin: 0 0 14px; line-height: 1.5; }
+.tpbox { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; box-shadow: var(--shadow); }
+.tpbox h4 { font-size: 13px; color: var(--blue); margin-bottom: 10px; }
+.tpbox__muted { font-size: 12.5px; color: var(--muted); margin: 0; }
+.tplist { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.tplist li { font-size: 13px; color: var(--text-2); display: flex; gap: 8px; }
+.tplist li::before { content: "✓"; color: var(--success); font-weight: 800; }
+.tprow { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--line-2); }
+.tprow:last-child { border-bottom: 0; }
+.tprow span { color: var(--muted); }
+.tprow b { color: var(--ink); text-align: right; }
+.tpbox--ai .tpai { display: flex; align-items: baseline; gap: 8px; }
+.tpbox--ai .tpai b { font-size: 30px; font-weight: 900; color: var(--blue); }
+.tpbox--ai .tpai span { font-size: 12px; color: var(--muted); }
+.tpbox__link { display: inline-block; margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--accent); }
+.gauge2 { height: 10px; border-radius: 6px; background: var(--smoke); overflow: hidden; }
+.gauge2__fill { height: 100%; border-radius: 6px; background: var(--grad-bar); }
+.gauge2__label { font-size: 13px; font-weight: 800; color: var(--blue); margin-top: 8px; }
