@@ -7,6 +7,16 @@ const nextConfig = {
   // /tools-static/_next/*, which cloudflare-worker-tools.js proxies and strips.
   // Only takes effect in production builds; dev still serves /_next directly.
   assetPrefix: process.env.NODE_ENV === 'production' ? '/tools-static' : undefined,
+  // assetPrefix points asset URLs at /tools-static/_next/*. The Cloudflare worker
+  // strips that prefix on the shared domain, but the Vercel origin itself must also
+  // serve those URLs (direct preview, and any proxy that forwards the prefix), so
+  // rewrite them back to /_next/*. beforeFiles runs before static resolution, so the
+  // real asset is found. Without this the whole app loads with no CSS/JS.
+  async rewrites() {
+    return {
+      beforeFiles: [{source: '/tools-static/_next/:path*', destination: '/_next/:path*'}],
+    }
+  },
   images: {
     // tool + AI-platform favicons load from Google's favicon service in local/dev.
     // Swapped for Sanity CDN assets once logos are uploaded.
