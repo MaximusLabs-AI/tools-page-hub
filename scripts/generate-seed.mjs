@@ -306,8 +306,32 @@ if (peec) {
   }
 }
 
+/* ---------- curation: hub covers AI-search / GEO / AEO only ---------- */
+// Deliberately excluded (CRM, web/product analytics, attribution, ABM, visitor-ID).
+// Confirmed with the team 2026-08-04. Removing an entry here re-adds the tool on regen.
+const EXCLUDED_TOOL_NAMES = new Set([
+  'HubSpot CRM', 'Salesforce Sales Cloud',
+  'Google Analytics (GA4)', 'PostHog', 'Plausible', 'Matomo', 'Fathom Analytics', 'Umami', 'Databuddy',
+  'Dreamdata', 'Factors.ai', 'HockeyStack', 'Ruler Analytics',
+  '6sense', 'Demandbase',
+  'Dealfront (Leadfeeder)', 'RB2B', 'Salespanel', 'Warmly',
+])
+const keptTools = toolDocs.filter((t) => !EXCLUDED_TOOL_NAMES.has(t.name))
+// prune categories no kept tool uses; walk the parent chain so ancestors of used cats survive
+const catIndex = new Map(categoryDocs.map((c) => [c._id, c]))
+const usedCatIds = new Set()
+const markCatUsed = (id) => {
+  let c = catIndex.get(id)
+  while (c && !usedCatIds.has(c._id)) { usedCatIds.add(c._id); c = c.parent ? catIndex.get(c.parent._ref) : null }
+}
+for (const t of keptTools) {
+  if (t.primaryCategory?._ref) markCatUsed(t.primaryCategory._ref)
+  for (const r of t.secondaryCategories || []) markCatUsed(r._ref)
+}
+const keptCats = categoryDocs.filter((c) => usedCatIds.has(c._id))
+
 /* ---------- write ---------- */
-const all = [...categoryDocs, ...toolDocs]
+const all = [...keptCats, ...keptTools]
 // 1) NDJSON for `sanity dataset import`
 const outPath = p('seed/tools-hub.seed.ndjson')
 mkdirSync(dirname(outPath), {recursive: true})
@@ -319,8 +343,8 @@ writeFileSync(appSeed, JSON.stringify(all, null, 0), 'utf8')
 
 /* ---------- summary ---------- */
 console.log(`Wrote ${all.length} docs -> seed/tools-hub.seed.ndjson`)
-console.log(`  categories: ${categoryDocs.length}`)
-console.log(`  tools:      ${toolDocs.length}`)
+console.log(`  categories: ${keptCats.length} (of ${categoryDocs.length}; pruned empty after curation)`)
+console.log(`  tools:      ${keptTools.length} (of ${toolDocs.length}; ${EXCLUDED_TOOL_NAMES.size} excluded)`)
 console.log(`  descriptions matched from Phase 2: ${summary.descMatched}/${toolDocs.length}`)
 if (summary.descMissing.length) console.log(`  descriptions generated (no Phase 2 match): ${summary.descMissing.join(', ')}`)
 console.log(`  AI Answer Confidence seeded: Peec AI (illustrative)`)

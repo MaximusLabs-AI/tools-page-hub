@@ -16,12 +16,10 @@ export interface Answers {
 
 export const PROBLEMS: {value: string; label: string; categories: string[]}[] = [
   {value: 'ai-visibility', label: 'Track my brand in AI answers', categories: ['L3-AIVIS-NATIVE', 'L3-AIVIS-SUITE']},
-  {value: 'analytics', label: 'Replace Google Analytics (privacy-first)', categories: ['L2-WEBANALYTICS-PRIVACY']},
-  {value: 'attribution', label: 'Connect marketing spend to revenue', categories: ['L2-B2BATTR']},
-  {value: 'visitor-id', label: 'Identify anonymous website visitors', categories: ['L2-VISITORID', 'L2-ABM']},
-  {value: 'seo', label: 'Rank tracking & SEO', categories: ['L2-RANKTRACK', 'L2-SEOSUITE']},
   {value: 'content', label: 'Optimize content for AI answers', categories: ['L2-GEOCONTENT']},
   {value: 'technical', label: 'Technical SEO, schema & crawlers', categories: ['L2-SCHEMA', 'L2-TECHCRAWL', 'L2-AICRAWL']},
+  {value: 'search-console', label: 'Search Console data & insights', categories: ['L2-GSC', 'L2-GSCEXT']},
+  {value: 'seo', label: 'Rank tracking & SEO', categories: ['L2-RANKTRACK', 'L2-SEOSUITE']},
 ]
 
 export const BUDGETS: {value: number; label: string}[] = [

@@ -10,9 +10,9 @@ const tools = await localRepository.getTools()
 const bySlug = (s: string) => tools.find((t) => t.slug === s)!
 
 describe('seed integrity', () => {
-  it('loads 50 tools and 22 categories', async () => {
-    expect(tools).toHaveLength(50)
-    expect(await localRepository.getCategories()).toHaveLength(22)
+  it('loads the curated AI-search catalog (31 tools, 13 categories)', async () => {
+    expect(tools).toHaveLength(31)
+    expect(await localRepository.getCategories()).toHaveLength(13)
   })
   it('resolves references (primary category + alternatives)', () => {
     const peec = bySlug('peec-ai')
@@ -31,7 +31,7 @@ describe('search', () => {
     expect(searchTools(tools, 'peec').map((t) => t.slug)).toContain('peec-ai')
   })
   it('finds by category term', () => {
-    expect(searchTools(tools, 'attribution').length).toBeGreaterThan(0)
+    expect(searchTools(tools, 'visibility').length).toBeGreaterThan(0)
   })
 })
 
@@ -49,7 +49,7 @@ describe('comparison', () => {
 
 describe('tool finder', () => {
   it('hard-excludes tools without a free plan when free is required', () => {
-    const recs = findTools(tools, {problem: 'analytics', budget: 0, needFree: true})
+    const recs = findTools(tools, {problem: 'technical', budget: 0, needFree: true})
     expect(recs.length).toBeGreaterThan(0)
     for (const r of recs) expect(r.tool.pricingPlans.some((p) => p.freePlan)).toBe(true)
   })
@@ -61,15 +61,15 @@ describe('tool finder', () => {
 
 describe('stack builder', () => {
   it('sums numeric prices and excludes custom-priced tools (the $0 bug is fixed)', () => {
-    const cost = calculateStackCost([bySlug('profound'), bySlug('plausible'), bySlug('peec-ai')])
+    const cost = calculateStackCost([bySlug('profound'), bySlug('otterly-ai'), bySlug('peec-ai')])
     expect(cost.excluded).toContain('Profound') // custom-enterprise, not counted as $0
-    expect(cost.countedTools).toContain('Plausible')
-    expect(cost.monthly).toBeGreaterThan(0) // Plausible ($9) + Peec ($95) must total > 0
+    expect(cost.countedTools).toContain('Otterly.AI')
+    expect(cost.monthly).toBeGreaterThan(0) // Otterly ($29) + Peec ($95) must total > 0
   })
   it('numeric prices are populated for paid tools (the $0 bug is fixed)', () => {
     const priced = tools.filter((t) => t.pricingPlans.some((p) => typeof p.price === 'number'))
-    expect(priced.length).toBeGreaterThanOrEqual(40) // was 0 before the fix
-    expect(bySlug('plausible').pricingPlans[0].price).toBe(9)
+    expect(priced.length).toBeGreaterThanOrEqual(20) // was 0 before the fix; 27 of 31 now priced
+    expect(bySlug('otterly-ai').pricingPlans[0].price).toBe(29)
     expect(bySlug('peec-ai').pricingPlans[0].price).toBe(95)
     expect(bySlug('profound').pricingPlans[0].price ?? null).toBeNull() // custom stays null, never $0
   })
