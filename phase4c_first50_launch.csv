@@ -1,0 +1,51 @@
+Rank,Tool,Priority,Primary Category,Coverage Pillar,Target Audience,Pricing Classification,Verification Status,Official URL,Closest Alternatives,Publication Week
+1,Peec AI,1,AI Visibility Tracking (Native),AI-search visibility,"SEO/Marketing leads, agencies","Paid, ~$95-105/mo entry",Verified,https://peec.ai,"Otterly.AI, Profound, Scrunch AI",1
+2,Otterly.AI,1,AI Visibility Tracking (Native),AI-search visibility,"Solo marketers, SMBs, small agencies","Paid tiers, $29-489/mo",Verified,https://otterly.ai,"AthenaHQ, Peec AI, ZipTie.dev",1
+3,Profound,2,AI Visibility Tracking (Native),AI-search visibility,Enterprise marketing/SEO teams,Custom-enterprise (not listed),Verified (positioning),https://tryprofound.com,"Peec AI, Scrunch AI",1
+4,Scrunch AI,2,AI Visibility Tracking (Native),AI-search visibility,Mid-market to enterprise marketing,Not publicly verified,Partially verified,https://scrunch.com,"Peec AI, Profound",2
+5,AthenaHQ,2,AI Visibility Tracking (Native),AI-search visibility,Mid-market/enterprise GTM,"Freemium; $295-2000+/mo paid",Verified,https://athenahq.ai,"Otterly.AI, LLMrefs",2
+6,ZipTie.dev,2,AI Visibility Tracking (Native),AI-search visibility,"Small teams, solo SEOs","Paid, $69-159/mo",Verified,https://ziptie.dev,"Otterly.AI, LLMrefs",2
+7,LLMrefs,2,AI Visibility Tracking (Native),AI-search visibility,SMB/mid-market,"Flat, $79/mo",Verified,https://llmrefs.com,"Otterly.AI, ZipTie.dev",2
+8,Ahrefs Brand Radar,2,AI Visibility (Suite Module),AI-search visibility,Existing Ahrefs customers,Bundled in Ahrefs subscription,Verified,https://ahrefs.com/brand-radar,"Semrush AI Toolkit, Peec AI",3
+9,Semrush AI Toolkit,2,AI Visibility (Suite Module),AI-search visibility,Existing Semrush customers,Bundled from ~$117-140/mo,Partially verified,https://semrush.com,Ahrefs Brand Radar,3
+10,GEO Toolbox llms.txt Checker,2,AI Crawler & Technical Auditing,AI-search visibility,"Developers, technical SEOs",Free,Verified,https://geotoolbox.ai/tools/llms-txt-checker,Clunky.ai llms.txt Generator,6
+11,Clunky.ai llms.txt Generator,2,AI Crawler & Technical Auditing,AI-search visibility,"Developers, technical SEOs",Free,Verified,https://clunky.ai/llms-txt-generator,GEO Toolbox llms.txt Checker,6
+12,Google Search Console,1,Search Console (First-Party),SEO/GSC complements,All SEO practitioners,Free,Verified,https://search.google.com/search-console,None (first-party),1
+13,Bing Webmaster Tools,1,Search Console (First-Party),SEO/GSC complements,All SEO practitioners,Free,Verified,https://bing.com/webmasters,None (first-party),1
+14,SEOTesting,2,GSC Data Enhancement,SEO/GSC complements,SEO teams,Paid SaaS,Partially verified,https://seotesting.com,DataForSEO,3
+15,DataForSEO,2,SEO Data API,Developer-oriented,"Developers, agencies","$250/1M keywords, sandbox available",Verified,https://dataforseo.com,"Semrush API, Ahrefs API",3
+16,SEO PowerSuite Rank Tracker,2,Rank Tracking,SEO/GSC complements,Budget/solo SEOs,Free desktop; $349/yr paid,Verified,https://link-assistant.com/rank-tracker,"SerpRobot, Nightwatch",3
+17,AccuRanker,2,Rank Tracking,SEO/GSC complements,Agencies,From $224/mo (2000-keyword floor),Verified,https://accuranker.com,"SE Ranking, Nightwatch",3
+18,SE Ranking,2,Rank Tracking / SEO Suite,SEO/GSC complements,Budget all-in-one buyers,From ~$87-103/mo (annual),Verified,https://seranking.com,"Mangools, Moz Pro",3
+19,Ahrefs,1,SEO Suite,SEO/GSC complements,All-in-one suite buyers,Lite ~$99-129/mo,Verified,https://ahrefs.com,"Semrush, Moz Pro",3
+20,Semrush,1,SEO Suite,SEO/GSC complements,All-in-one suite buyers,From ~$117-140/mo,Verified,https://semrush.com,"Ahrefs, Moz Pro",3
+21,Mangools,2,Rank Tracking / SEO Suite,SEO/GSC complements,Solo/small teams,$29.90-89.90/mo,Verified,https://mangools.com,"SE Ranking, Moz Pro",4
+22,Moz Pro,2,SEO Suite / Backlink Analysis,SEO/GSC complements,"Beginners, small sites, budget agencies",$39-299/mo,Verified,https://moz.com,"Ahrefs, Semrush",4
+23,Screaming Frog,2,Technical SEO / Site Crawler,Developer-oriented,Technical SEOs,~$21.58/mo annual license; free limited,Verified,https://screamingfrog.co.uk,Sitebulb,7
+24,Google Analytics (GA4),1,Web Analytics (First-Party),Web analytics,All marketers,Free,Verified,https://analytics.google.com,None (first-party),1
+25,Plausible,1,Privacy-First Web Analytics,Web analytics,Privacy-conscious SMBs,"$9-69/mo, no free tier",Verified,https://plausible.io,"Fathom, Umami, Matomo",2
+26,Fathom Analytics,2,Privacy-First Web Analytics,Web analytics,Privacy-conscious SMBs,$14-15/mo (100K PV),Verified,https://usefathom.com,"Plausible, Umami",2
+27,Umami,2,Privacy-First Web Analytics,Web analytics,"Developers, budget teams",Free self-hosted; Cloud free tier; Pro $9/mo,Verified,https://umami.is,"Plausible, Matomo",2
+28,Matomo,2,Privacy-First Web Analytics,Web analytics,European/privacy-first companies,Free self-hosted; Cloud from ~EUR29/mo,Verified,https://matomo.org,"Plausible, Umami",2
+29,Databuddy,2,Privacy-First Web Analytics,Web analytics,Developer-led teams,Free; Pro $9.99/mo (30k events),Verified,https://databuddy.cc,"Umami, Plausible",5
+30,PostHog,2,Product Analytics,Developer-oriented,Developer-led product teams,Free (10k events); $9.99-49.99/mo,Verified,https://posthog.com,"Mixpanel, Amplitude",5
+31,Factors.ai,1,B2B Attribution,Marketing attribution,Growth-stage B2B,Free tier available; paid not fully detailed,Verified (positioning),https://factors.ai,"Dreamdata, HockeyStack",2
+32,Dreamdata,2,B2B Attribution,Marketing attribution,Mid-market/enterprise B2B,Free tier; paid $599-999+/mo (third-party estimate),Verified (free tier); pricing partially verified,https://dreamdata.io,"Factors.ai, HockeyStack",5
+33,HockeyStack,2,B2B Attribution,Marketing attribution,Dedicated RevOps teams,No free tier; ~$949-2200/mo (third-party estimate),Verified (no free tier); pricing partially verified,https://hockeystack.com,"Dreamdata, Factors.ai",5
+34,Ruler Analytics,2,B2B Attribution,Marketing attribution,Call/form-driven B2B,From GBP199/mo to GBP1149+/mo,Verified,https://ruleranalytics.com,"Dreamdata, Factors.ai",5
+35,6sense,2,ABM & Intent Data,Account intelligence,Enterprise ABM teams,Free (50 credits/mo); avg contract ~$123711/yr,Verified,https://6sense.com,Demandbase,4
+36,Demandbase,2,ABM & Intent Data,Account intelligence,Enterprise ABM teams,"Custom, not disclosed",Verified (opacity confirmed),https://demandbase.com,6sense,4
+37,Warmly,2,Visitor/Account Identification,Account intelligence,Person-level ID + AI engagement buyers,Free (500 visitors/mo); paid $10K-30K/yr,Verified,https://warmly.ai,"RB2B, Dealfront",6
+38,Dealfront (Leadfeeder),1,Visitor/Account Identification,Account intelligence,GDPR-first SMB/mid-market,Free (100 companies/mo); EUR99-1999/mo,Verified,https://dealfront.com,"RB2B, Albacross",6
+39,RB2B,2,Visitor/Account Identification,Account intelligence,Slack-first SMB,Free (150 resolutions/mo); $79-199+/mo,Verified,https://rb2b.com,"Warmly, Dealfront",6
+40,Salespanel,2,Visitor/Account Identification / CDP,Account intelligence,CDP + visitor ID buyers,CDP from $99/mo; Account Reveal from $99/mo,Verified,https://salespanel.io,"Dealfront, Albacross",6
+41,Surfer SEO,2,Content Optimization,AI marketing,"Content teams, agencies",$49-299/mo,Verified,https://surferseo.com,"Clearscope, Frase",5
+42,Clearscope,2,Content Optimization,AI marketing,Premium enterprise content teams,Essentials $129/mo; Business $399/mo; Enterprise custom,Verified,https://clearscope.io,"Surfer SEO, MarketMuse",5
+43,Frase,2,Content Optimization,AI marketing,Budget SEO+GEO teams,Starter ~$39-45/mo; Professional ~$115-129/mo,Verified,https://frase.io,"Surfer SEO, NeuronWriter",5
+44,MarketMuse,2,Content Optimization,AI marketing,Content strategy teams,Free (limited); ~$149/mo paid,Verified,https://marketmuse.com,"Clearscope, Surfer SEO",5
+45,NeuronWriter,2,Content Optimization,AI marketing,Tight-budget content teams,~$23/mo,Verified,https://neuronwriter.com,"Frase, Surfer SEO",5
+46,GSCPilot Schema Generator,2,Schema Markup Tools,Developer-oriented,"Developers, technical SEOs",Free,Verified,https://gscpilot.com/tools/schema-generator,"SEOmator, RankRanger",6
+47,SEOmator Schema Generator,2,Schema Markup Tools,Developer-oriented,"Developers, technical SEOs",Free,Verified,https://seomator.com/schema-markup-generator,"GSCPilot, RankRanger",6
+48,Phrasera Readability Checker,2,Readability & Content Quality,AI marketing,Content marketers,Free,Verified,https://phrasera.com/readability-checker,"Zerethon, Textorum",7
+49,HubSpot CRM,1,CRM & Marketing Automation,Marketing automation,SMB to enterprise,Free CRM; Starter $20/seat/mo; Pro $1170-1500/mo; Enterprise $3500-4300/mo,Verified,https://hubspot.com,"Salesforce, Pipedrive",8
+50,Salesforce Sales Cloud,2,CRM,Marketing automation,Mid-market to enterprise sales orgs,Starter $25/user/mo to Agentforce 1 $550/user/mo,Verified,https://salesforce.com,HubSpot CRM,8

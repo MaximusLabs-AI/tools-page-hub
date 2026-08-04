@@ -1,0 +1,27 @@
+# dependencies / build output
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# secrets — NEVER commit (the Sanity token lives here)
+.env
+.env.local
+.env*.local
+**/.env.local
+**/.env*.local
+.sanity-token
+
+# next / vercel
+next-env.d.ts
+.vercel
+
+# logs / os
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

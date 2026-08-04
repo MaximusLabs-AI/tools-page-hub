@@ -1,0 +1,23 @@
+category_id,name,parent,level,definition,slug,indexable,min_products,update_freq
+L1-AISEARCH,AI Search & Answer Engine Intelligence,,1,"Software/services helping brands monitor, measure, or improve presence in AI-generated answers across LLMs and AI search surfaces.",ai-search,True,8,"monthly (pricing), quarterly (features)"
+L2-AIVIS,AI Visibility Tracking,L1-AISEARCH,2,"Tools that query AI models with prompts and measure brand mention/citation frequency, position, and sentiment.",ai-search/visibility-tracking,True,7,monthly
+L3-AIVIS-NATIVE,Native AI-Visibility Platforms,L2-AIVIS,3,Standalone companies built exclusively for AI-search visibility measurement (not modules of a broader SEO suite).,ai-search/visibility-tracking/native,True,5,monthly
+L3-AIVIS-SUITE,Suite-Embedded AI Visibility Modules,L2-AIVIS,3,AI visibility features bundled inside pre-existing SEO suites; not independently purchasable products.,ai-search/visibility-tracking/suite-modules,True,2,quarterly
+L2-AICRAWL,AI Crawler & Technical Auditing,L1-AISEARCH,2,"Tools verifying AI-crawler access (GPTBot, ClaudeBot, PerplexityBot) and llms.txt validity.",ai-search/technical-auditing,True,2,quarterly
+L2-GEOCONTENT,GEO/AEO Content Optimization,L1-AISEARCH,2,"Tools scoring or generating content optimized for AI-answer extractability (answer nuggets, readability, briefs).",ai-search/content-optimization,True,6,quarterly
+L1-SEARCHSEO,Search & SEO Intelligence,,1,"Tools for search performance monitoring, rank tracking, technical SEO, and SEO suites.",search-seo,True,10,quarterly
+L2-GSC,Search Console (First-Party),L1-SEARCHSEO,2,Official first-party search performance tools operated directly by the search engine.,search-seo/search-console,True,2,quarterly
+L2-GSCEXT,Search Console Data Enhancement,L1-SEARCHSEO,2,"Tools that import, extend, or enhance first-party GSC/Bing data (never replace it).",search-seo/gsc-enhancement,True,3,quarterly
+L2-RANKTRACK,Rank Tracking,L1-SEARCHSEO,2,Tools tracking keyword ranking positions across search engines.,search-seo/rank-tracking,True,7,monthly
+L2-SEOSUITE,SEO Suites,L1-SEARCHSEO,2,"Broad multi-feature platforms combining rank tracking, backlinks, site audit, and keyword research.",search-seo/suites,True,4,quarterly
+L2-TECHCRAWL,Technical SEO / Site Crawlers,L1-SEARCHSEO,2,"Desktop/cloud crawlers for technical SEO audits (broken links, redirects, indexation).",search-seo/site-crawlers,True,2,quarterly
+L2-SCHEMA,Schema Markup Tools,L1-SEARCHSEO,2,Free/paid tools generating or validating JSON-LD structured data.,search-seo/schema-tools,True,3,quarterly
+L1-ANALYTICS,Web & Product Analytics,,1,Tools measuring website traffic (marketing) or in-product user behavior (product).,analytics,True,9,quarterly
+L2-WEBANALYTICS-FIRSTPARTY,Web Analytics (First-Party),L1-ANALYTICS,2,Official first-party web analytics platform (Google Analytics).,analytics/first-party,True,1,quarterly
+L2-WEBANALYTICS-PRIVACY,Privacy-First Web Analytics,L1-ANALYTICS,2,"Cookie-free/GDPR-first web analytics positioned as GA4 alternatives, measuring marketing traffic.",analytics/privacy-first,True,6,quarterly
+L2-PRODUCTANALYTICS,Product Analytics,L1-ANALYTICS,2,Event-based behavioral analytics for in-product feature usage/retention; NOT a marketing-traffic (GA4) replacement.,analytics/product-analytics,True,4,quarterly
+L1-ATTRIBUTION,"Attribution, Account Intelligence & Buyer Journeys",,1,"Tools connecting marketing/ad activity to CRM pipeline/revenue, and identifying anonymous account-level website visitors.",attribution,True,8,quarterly
+L2-B2BATTR,B2B Multi-Touch Attribution,L1-ATTRIBUTION,2,Platforms linking marketing touchpoints to CRM-recorded revenue outcomes.,attribution/b2b-attribution,True,4,quarterly
+L2-ABM,ABM & Intent Data,L1-ATTRIBUTION,2,Predictive account scoring and intent-based orchestration platforms; distinct job from attribution reporting.,attribution/abm-intent,True,2,quarterly
+L2-VISITORID,Visitor/Account Identification,L1-ATTRIBUTION,2,Tools de-anonymizing company- or person-level website visitors (dark-funnel intelligence).,attribution/visitor-identification,True,6,quarterly
+L1-CRM,"CRM, Sales & Revenue",,1,Customer relationship management and revenue operations platforms.,crm-sales,True,2,quarterly

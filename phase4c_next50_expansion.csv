@@ -1,0 +1,51 @@
+Slot,Tool,Primary Category,Verification Status,Readiness,Action Required,Official URL,Notes
+1,Nightwatch,Rank Tracking,Partially verified,Ready for expansion wave,Confirm current pricing (source variance ~$32-79/mo),https://nightwatch.io,Local/multi-location rank tracking strength
+2,ProRankTracker,Rank Tracking,Verified,Ready,None,https://proranktracker.com,$99/mo; Copilot-specific tracking noted
+3,SerpRobot,Rank Tracking,Verified,Ready,None,https://serprobot.com,$4.99/mo; lowest-cost rank tracking
+4,Sitebulb,Technical SEO / Site Crawler,Not publicly verified (pricing),Needs verification pass,Verify official pricing page,https://sitebulb.com,Screaming Frog alternative
+5,Simple Analytics,Privacy-First Web Analytics,Partially verified,Ready,Confirm full pricing tiers,https://simpleanalytics.com,GA4 alternative
+6,Mixpanel,Product Analytics,Not publicly verified,Needs full research pass,Full pricing + feature verification,https://mixpanel.com,NOT a GA4 replacement - product analytics only
+7,Amplitude,Product Analytics,Not publicly verified,Needs full research pass,Full pricing + feature verification,https://amplitude.com,NOT a GA4 replacement - product analytics only
+8,Heap,Product Analytics,Not publicly verified,Needs full research pass,Full pricing + feature verification,https://heap.io,Auto-capture product analytics
+9,Albacross,Visitor/Account Identification,Partially verified,Ready,Confirm pricing tiers,https://albacross.com,Company-level ID; transparent pricing noted
+10,Lead Forensics,Visitor/Account Identification,Verified (opacity confirmed),Ready,Publish with custom-pricing label,https://leadforensics.com,No public pricing - opacity confirmed
+11,RankRanger Schema Markup Generator,Schema Markup Tools,Verified,Ready,None,https://rankranger.com/schema-markup-generator,Free; 8 schema types
+12,Zerethon Readability Checker,Readability & Content Quality,Verified,Ready,None,https://tools.zerethon.com/readability-checker,Free; no signup required
+13,Textorum Flesch Reading Score,Readability & Content Quality,Verified,Ready,None,https://textorum.io/flesch-reading-score,Free Flesch + grade level
+14,Rillow AI Content Brief Generator,Content Brief Generation,Verified,Ready,None,https://rillow.ai,Free; no signup
+15,Junia AI SEO Content Brief Generator,Content Brief Generation,Verified,Ready,None,https://junia.ai,Free; SERP-grounded briefs
+16,Promptwatch,AI Visibility Tracking,Not publicly verified,Monitor-only,Do not publish full profile until primary-source verified,Not publicly verified,Single comparison-article mention only
+17,Sanbi.ai,AI Visibility Tracking,Not publicly verified,Monitor-only,Do not publish full profile until primary-source verified,https://sanbi.ai,Positioned as Peec/Profound alternative; unverified
+18,Alhena,AI Visibility Tracking,Not publicly verified,Monitor-only,Do not publish full profile until primary-source verified,https://alhena.ai,Compares vs Profound/Peec/Scrunch; unverified
+19,Dageno AI,AI Visibility Tracking,Not publicly verified,Monitor-only,Do not publish full profile until primary-source verified,Not publicly verified,Single-source mention as AthenaHQ alternative
+20,Rankscale,AI Visibility Tracking,Not publicly verified,Monitor-only,Do not publish full profile until primary-source verified,Not publicly verified,Single-source mention as AthenaHQ alternative
+21,OPEN SLOT,Paid Search / Paid Social / Programmatic,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+22,OPEN SLOT,Paid Search / Paid Social / Programmatic,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+23,OPEN SLOT,Paid Search / Paid Social / Programmatic,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+24,OPEN SLOT,Paid Search / Paid Social / Programmatic,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+25,OPEN SLOT,Paid Search / Paid Social / Programmatic,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+26,OPEN SLOT,Customer Data Platform (standalone),Not researched,BLOCKED,Dedicated research pass required,N/A,e.g. Segment / mParticle class tools
+27,OPEN SLOT,Customer Data Platform (standalone),Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+28,OPEN SLOT,Customer Data Platform (standalone),Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+29,OPEN SLOT,Customer Data Platform (standalone),Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+30,OPEN SLOT,Sales Engagement / Outreach,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+31,OPEN SLOT,Sales Engagement / Outreach,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+32,OPEN SLOT,Sales Engagement / Outreach,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+33,OPEN SLOT,Sales Engagement / Outreach,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+34,OPEN SLOT,Data Enrichment / Sales Intelligence,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+35,OPEN SLOT,Data Enrichment / Sales Intelligence,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+36,OPEN SLOT,Data Enrichment / Sales Intelligence,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+37,OPEN SLOT,Reputation & Review Management,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+38,OPEN SLOT,Reputation & Review Management,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+39,OPEN SLOT,Reputation & Review Management,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+40,OPEN SLOT,Social Listening / UGC Monitoring,Not researched,BLOCKED,Dedicated research pass required,N/A,Brandwatch/Brand24/Mention removed in Phase 2 for lack of verified pricing
+41,OPEN SLOT,Social Listening / UGC Monitoring,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+42,OPEN SLOT,Social Listening / UGC Monitoring,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+43,OPEN SLOT,LLM Observability / Prompt Management,Not researched,BLOCKED,Dedicated research pass required,N/A,Developer-oriented AI tooling gap
+44,OPEN SLOT,LLM Observability / Prompt Management,Not researched,BLOCKED,Dedicated research pass required,N/A,Developer-oriented AI tooling gap
+45,OPEN SLOT,LLM Observability / Prompt Management,Not researched,BLOCKED,Dedicated research pass required,N/A,Developer-oriented AI tooling gap
+46,OPEN SLOT,CMS / Headless CMS,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+47,OPEN SLOT,CMS / Headless CMS,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+48,OPEN SLOT,Email Marketing / Marketing Automation,Not researched,BLOCKED,Dedicated research pass required,N/A,Beyond CRM-bundled tools already covered
+49,OPEN SLOT,Email Marketing / Marketing Automation,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
+50,OPEN SLOT,CRO / Experimentation / Personalization,Not researched,BLOCKED,Dedicated research pass required,N/A,Phase 2 Section 2 identified gap category
