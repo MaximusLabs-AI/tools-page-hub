@@ -1,14 +1,15 @@
 name: Deploy to Vercel
 
 # Deploys the Next.js app (in tools-hub-app/) to Vercel on every push to main.
+# The workflow builds INSIDE tools-hub-app, so it does not depend on the Vercel
+# project's Root Directory setting — leave that as the default (repo root / ".").
 #
 # Add these three repository secrets (Settings -> Secrets and variables -> Actions):
 #   VERCEL_TOKEN        your Vercel access token
 #   VERCEL_ORG_ID       your Vercel team/organization id
 #   VERCEL_PROJECT_ID   the Vercel project id
 #
-# In the Vercel project settings, set  Root Directory = tools-hub-app.
-# No env vars need to be configured in Vercel: the public Sanity config is in
+# No env vars need to be configured in Vercel: the public Sanity config lives in
 # tools-hub-app/.env.production, and the dataset is public (no token needed).
 
 on:
@@ -23,6 +24,9 @@ env:
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools-hub-app
     steps:
       - name: Checkout
         uses: actions/checkout@v4
