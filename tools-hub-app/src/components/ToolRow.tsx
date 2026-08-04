@@ -7,7 +7,7 @@ import ToolLogo from './ToolLogo'
 export default function ToolRow({tool, medal}: {tool: Tool; medal?: string | null}) {
   const free = tool.pricingPlans.some((p) => p.freePlan)
   return (
-    <Link className="toolrow" href={`/tools/${tool.slug}`}>
+    <Link className="toolrow" href={`/tools/${tool.slug}`} prefetch={false}>
       <span className="medal">{medal || <i className="medal__dot" />}</span>
       <ToolLogo domain={tool.domain} name={tool.name} size={38} />
       <div className="toolrow__body">

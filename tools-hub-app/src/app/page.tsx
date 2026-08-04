@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import {repo} from '@/lib/repository'
-import {featuredTools} from '@/lib/core/taxonomy'
+import {featuredTools, rankTools} from '@/lib/core/taxonomy'
 import EveryoneUses from '@/components/EveryoneUses'
-import CategoryBlock from '@/components/CategoryBlock'
+import UltimateDirectory, {type UltimateDirectoryGroup} from '@/components/UltimateDirectory'
 
 export default async function CollectionPage() {
   const [tools, categories] = await Promise.all([repo.getTools(), repo.getCategories()])
@@ -11,6 +11,20 @@ export default async function CollectionPage() {
     .map((category) => ({category, tools: tools.filter((t) => t.primaryCategory.code === category.code)}))
     .filter((x) => x.tools.length > 0)
     .sort((a, b) => b.tools.length - a.tools.length)
+  const directoryGroups: UltimateDirectoryGroup[] = productCats.map(({category, tools: categoryTools}) => ({
+    id: category.id,
+    name: category.name,
+    slug: category.slug,
+    definition: category.definition,
+    tools: rankTools(categoryTools).map((tool) => ({
+      id: tool.id,
+      name: tool.name,
+      slug: tool.slug,
+      domain: tool.domain,
+      description: tool.oneLineDescription,
+      free: tool.pricingPlans.some((plan) => plan.freePlan),
+    })),
+  }))
 
   return (
     <>
@@ -58,29 +72,15 @@ export default async function CollectionPage() {
         </div>
       </section>
 
-      {/* ultimate directory — newsletter card + category columns */}
-      <section className="blk grey" id="directory">
-        <div className="wrap">
+      {/* ultimate directory — sticky category table of contents + compact catalog */}
+      <section className="blk grey directory-section" id="directory">
+        <div className="directory-wrap">
           <h2 className="ctr-h2">The Ultimate AI-Era Tools Directory for 2026</h2>
           <p className="ctr-dek">
             Compare the best AI-search, GEO, SEO, analytics and attribution tools in one place, split by category
             and ranked by fit, so your team can focus on results.
           </p>
-          <div className="dircols">
-            <div className="nlcard">
-              <div className="nlcard__eyebrow">Founder’s Voice · Krishna Kaanth</div>
-              <h3>Unlock AI-search secrets</h3>
-              <p>Every month: which tools AI engines actually recommend, which are all marketing, and the free stack that beats the paid one.</p>
-              <form className="nlcard__form" action="https://maximuslabs.ai" target="_blank">
-                <input type="email" placeholder="you@company.com" aria-label="Email" />
-                <button className="btn btn--primary" type="submit">Subscribe</button>
-              </form>
-              <span className="nlcard__note">Join 6,000+ growth marketers. No spam.</span>
-            </div>
-            {productCats.map(({category, tools: ct}) => (
-              <CategoryBlock key={category.id} category={category} tools={ct} />
-            ))}
-          </div>
+          <UltimateDirectory groups={directoryGroups} />
         </div>
       </section>
     </>

@@ -1,6 +1,7 @@
 'use client'
 import {useState} from 'react'
 import Link from 'next/link'
+import {useRouter} from 'next/navigation'
 import type {Tool} from '@/lib/types'
 import ToolLogo from './ToolLogo'
 
@@ -8,6 +9,7 @@ type Group = {code: string; name: string; tools: Tool[]}
 
 /** ColdIQ "Everyone Uses": category sidebar (filter) + 3-column tool card grid. */
 export default function EveryoneUses({featured, groups}: {featured: Tool[]; groups: Group[]}) {
+  const router = useRouter()
   const [active, setActive] = useState('featured')
   const shown = active === 'featured' ? featured : (groups.find((g) => g.code === active)?.tools ?? [])
   const items = [{code: 'featured', name: 'Best AI-era tools'}, ...groups.slice(0, 9).map((g) => ({code: g.code, name: g.name}))]
@@ -25,7 +27,14 @@ export default function EveryoneUses({featured, groups}: {featured: Tool[]; grou
       </aside>
       <div className="eu__grid">
         {shown.slice(0, 15).map((t) => (
-          <Link key={t.id} className="eucard" href={`/tools/${t.slug}`}>
+          <Link
+            key={t.id}
+            className="eucard"
+            href={`/tools/${t.slug}`}
+            prefetch={false}
+            onMouseEnter={() => router.prefetch(`/tools/${t.slug}`)}
+            onFocus={() => router.prefetch(`/tools/${t.slug}`)}
+          >
             <div className="eucard__top">
               <ToolLogo domain={t.domain} name={t.name} size={34} radius={9} />
               <span className="eucard__nm">{t.name}</span>

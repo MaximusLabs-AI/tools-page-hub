@@ -5,6 +5,7 @@ import ToolLogo from './ToolLogo'
 import AIConfidence from './AIConfidence'
 import Comments from './Comments'
 import {AiPill} from './badges'
+import VideoPlayer from './VideoPlayer'
 
 const BILLING: Record<PricingModel, string> = {
   free: 'Free',
@@ -31,9 +32,9 @@ const vtag = (status: FeatureStatus) =>
         ? {cls: 'suite', label: 'Integration-dependent'}
         : {cls: 'unverified', label: status.replace(/-/g, ' ')}
 
-function toEmbed(url: string): string | null {
+function youtubeId(url: string): string | null {
   const match = url.match(/(?:youtu\.be\/|[?&]v=|embed\/)([\w-]{11})/)
-  return match ? `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0` : null
+  return match?.[1] || null
 }
 
 export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools: Tool[]}) {
@@ -52,7 +53,7 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
   const billing = entryPlan ? BILLING[entryPlan.pricingModel] : 'Not published'
   const ease = tool.easeOfUse ?? 72
   const easeLabel = ease >= 80 ? 'Easy' : ease >= 65 ? 'Moderate' : 'Advanced'
-  const videoEmbed = tool.videoUrl ? toEmbed(tool.videoUrl) : null
+  const videoId = tool.videoUrl ? youtubeId(tool.videoUrl) : null
   const tagline = tool.tagline || tool.oneLineDescription
   const overview =
     tool.overview ||
@@ -114,17 +115,12 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                   ))}
                 </div>
 
-                {videoEmbed ? (
+                {videoId ? (
                   <div className="video-wrap">
-                    <div className="video">
-                      <iframe
-                        src={videoEmbed}
-                        title={tool.videoTitle || `${tool.name} product overview`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        loading="lazy"
-                      />
-                    </div>
+                    <VideoPlayer
+                      videoId={videoId}
+                      title={tool.videoTitle || `${tool.name} product overview`}
+                    />
                     <div className="video-meta">
                       <div>
                         <span className={`video-meta__badge${tool.videoOfficial ? ' official' : ''}`}>
@@ -139,15 +135,30 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                     </div>
                   </div>
                 ) : (
-                  <div className="video-missing">
-                    <ToolLogo domain={tool.domain} name={tool.name} size={52} radius={13} />
-                    <div>
-                      <b>No vendor-published intro video found</b>
-                      <p>We did not substitute an unrelated tutorial or a fake YouTube search card.</p>
+                  <div className="official-preview">
+                    <div className="official-preview__bar">
+                      <span aria-hidden="true"><i /><i /><i /></span>
+                      <b>{tool.domain}</b>
                     </div>
-                    <a className="btn btn--ghost" href={tool.officialUrl} target="_blank" rel="noreferrer">
-                      See the product live →
-                    </a>
+                    <div className="official-preview__body">
+                      <ToolLogo domain={tool.domain} name={tool.name} size={60} radius={15} />
+                      <div className="official-preview__copy">
+                        <span className="section-kicker">Official product website</span>
+                        <h3>Explore {tool.name} at the source</h3>
+                        <p>
+                          No exact vendor-published intro video was found, so this profile links directly to the
+                          official product page instead of showing an unrelated tutorial.
+                        </p>
+                        <div className="official-preview__chips">
+                          {tool.capabilities.slice(0, 3).map((capability) => (
+                            <span key={capability.name}>{capability.name}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <a className="btn btn--sky" href={tool.officialUrl} target="_blank" rel="noreferrer">
+                        Visit {tool.name} →
+                      </a>
+                    </div>
                   </div>
                 )}
               </section>

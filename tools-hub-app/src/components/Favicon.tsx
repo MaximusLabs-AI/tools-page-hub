@@ -11,6 +11,9 @@ export default function Favicon({domain, size = 128}: {domain: string; size?: nu
       alt=""
       aria-hidden="true"
       referrerPolicy="no-referrer"
+      loading="lazy"
+      decoding="async"
+      fetchPriority="low"
       className={ok ? 'ok' : ''}
       onLoad={(e) => {
         if (e.currentTarget.naturalWidth > 1) setOk(true)

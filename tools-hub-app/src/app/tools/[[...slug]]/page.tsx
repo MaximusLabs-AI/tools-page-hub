@@ -24,31 +24,39 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   const slug = params.slug || []
   if (slug.length === 0) return {title: 'All tools'}
   const path = slug.join('/')
-  const cat = await repo.getCategoryBySlug(path)
-  if (cat) return {title: cat.name, description: cat.definition}
   if (slug.length === 1) {
-    const tool = await repo.getToolBySlug(slug[0])
+    const tools = await repo.getTools()
+    const tool = tools.find((candidate) => candidate.slug === slug[0])
     if (tool) return {title: `${tool.name} review`, description: tool.oneLineDescription}
   }
+  const cat = await repo.getCategoryBySlug(path)
+  if (cat) return {title: cat.name, description: cat.definition}
   return {}
 }
 
 export default async function ToolsCatchAll({params}: Props) {
   const slug = params.slug || []
   if (slug.length === 0) redirect('/')
-  const [tools, categories] = await Promise.all([repo.getTools(), repo.getCategories()])
+  const tools = await repo.getTools()
+
+  if (slug.length === 1) {
+    const tool = tools.find((candidate) => candidate.slug === slug[0])
+    if (tool) return <ToolProfileView tool={tool} allTools={tools} />
+  }
 
   const path = slug.join('/')
   const cat = await repo.getCategoryBySlug(path)
   if (cat) {
-    if (cat.level === 1) return <DepartmentView dept={cat} tools={tools} categories={categories} />
-    const catTools = await repo.getToolsByCategorySlug(cat.slug)
+    if (cat.level === 1) {
+      const categories = await repo.getCategories()
+      return <DepartmentView dept={cat} tools={tools} categories={categories} />
+    }
+    const catTools = tools.filter(
+      (tool) =>
+        tool.primaryCategory.slug === cat.slug ||
+        tool.secondaryCategories.some((category) => category.slug === cat.slug),
+    )
     return <CategoryView category={cat} tools={catTools} />
-  }
-
-  if (slug.length === 1) {
-    const tool = await repo.getToolBySlug(slug[0])
-    if (tool) return <ToolProfileView tool={tool} allTools={tools} />
   }
 
   notFound()
