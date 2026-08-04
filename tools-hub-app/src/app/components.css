@@ -193,3 +193,30 @@
 .glance dt { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 800; }
 .glance dd { margin: 6px 0 0; font-size: 16px; font-weight: 800; color: var(--blue); }
 .backlink { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--accent); }
+
+/* ===== compact, readable tool landing page ===== */
+.toolpage { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+.tback { padding: 18px 0 4px; }
+.tback a { font-size: 13px; font-weight: 700; color: var(--accent); }
+.thero { display: grid; grid-template-columns: 1fr 316px; gap: 30px; align-items: start; padding: 14px 0 22px; }
+@media (max-width: 820px) { .thero { grid-template-columns: 1fr; gap: 22px; } }
+.thero__head { display: flex; gap: 16px; align-items: center; }
+.thero h1 { font-size: clamp(28px, 4.5vw, 40px); line-height: 1.03; letter-spacing: -.03em; margin-top: 4px; }
+.thero__sub { font-size: 16px; color: var(--text-2); font-weight: 500; margin: 12px 0 0; max-width: 56ch; }
+/* compact navy verdict strip */
+.tverdict { display: flex; gap: 20px; align-items: center; background: var(--grad-cover); color: #fff; border-radius: 16px; padding: 20px 24px; margin-bottom: 4px; overflow: hidden; position: relative; }
+.tverdict__sc { flex: none; text-align: center; }
+.tverdict__sc b { font-size: 40px; font-weight: 900; line-height: 1; letter-spacing: -.03em; }
+.tverdict__sc span { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); font-weight: 800; margin-top: 4px; }
+.tverdict__body .kicker { color: var(--sky); margin-bottom: 6px; }
+.tverdict__body p { margin: 0; color: #c8dbf5; font-size: 14.5px; line-height: 1.55; }
+.tverdict__body p b { color: #fff; }
+/* tight sections separated by hairlines, not full-bleed color bands */
+.tsec { padding: 26px 0; border-top: 1px solid var(--line); }
+.tsec > h2 { font-size: 22px; margin-bottom: 6px; }
+.tsec > .lead { margin: 0 0 16px; }
+.tsec--flush { padding-top: 22px; }
+.feat--tight { grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 680px) { .feat--tight { grid-template-columns: 1fr; } }
+.fcard--tight { padding: 14px 16px; }
+.fcard--tight p { margin-top: 4px; }

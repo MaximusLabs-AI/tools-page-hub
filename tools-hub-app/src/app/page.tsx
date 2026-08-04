@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import {repo} from '@/lib/repository'
-import {featuredTools} from '@/lib/core/taxonomy'
+import {featuredTools, rankTools, MEDALS} from '@/lib/core/taxonomy'
 import ToolCard from '@/components/ToolCard'
-import CategoryBlock from '@/components/CategoryBlock'
+import ToolRow from '@/components/ToolRow'
+import DirectorySidebar from '@/components/DirectorySidebar'
 import {Motif} from '@/components/Logo'
 
 export default async function CollectionPage() {
@@ -47,13 +48,13 @@ export default async function CollectionPage() {
       </section>
 
       {/* tools everyone uses — white */}
-      <section className="blk paper" style={{paddingBottom: 44}}>
+      <section className="blk paper" style={{paddingBottom: 40}}>
         <div className="wrap">
           <div className="hr-accent" />
           <div className="blk__head">
             <div>
               <h2 className="sec">The tools everyone’s using</h2>
-              <p className="lead">The flagship platforms across AI-search, analytics and attribution, each with its live AI-answer confidence score.</p>
+              <p className="lead">The flagship platforms, each with its live AI-answer confidence score.</p>
             </div>
           </div>
           <div className="grid grid--feat">
@@ -64,33 +65,53 @@ export default async function CollectionPage() {
         </div>
       </section>
 
-      {/* the full directory — navy, three-column vertical masonry of category cards */}
-      <section className="blk navy">
-        <Motif className="motif" style={{left: -130, bottom: -160, transform: 'rotate(-14deg)'}} />
+      {/* directory — sticky category sidebar + scrolling tool list */}
+      <section className="blk grey">
         <div className="wrap">
           <div className="hr-accent" />
           <h2 className="sec">The ultimate AI-era tool directory</h2>
-          <p className="lead" style={{marginBottom: 26}}>
-            Every verified tool, split by category and ranked by fit. Click any tool for its full profile with
-            pricing, features, alternatives and AI-answer confidence.
+          <p className="lead" style={{marginBottom: 24}}>
+            Every verified tool, split by category and ranked by fit. Pick a category on the left; the list scrolls.
           </p>
-          <div className="dircols">
-            {productCats.map(({category, tools: ct}) => (
-              <CategoryBlock key={category.id} category={category} tools={ct} />
-            ))}
+          <div className="dir">
+            <DirectorySidebar
+              items={productCats.map(({category, tools: ct}) => ({code: category.code, name: category.name, count: ct.length}))}
+            />
+            <div className="dir__main">
+              {productCats.map(({category, tools: ct}) => {
+                const ranked = rankTools(ct)
+                return (
+                  <section className="catsec" id={`cat-${category.code.toLowerCase()}`} key={category.id}>
+                    <div className="catsec__head">
+                      <h3>
+                        <Link href={`/tools/${category.slug}`}>{category.name}</Link>
+                      </h3>
+                      <span className="count">{ct.length} tools</span>
+                    </div>
+                    <p className="catsec__def">{category.definition}</p>
+                    <div className="toollist">
+                      {ranked.map((t, i) => (
+                        <ToolRow key={t.id} tool={t} medal={i < 3 ? MEDALS[i] : null} />
+                      ))}
+                    </div>
+                  </section>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA — white */}
-      <section className="blk paper" style={{textAlign: 'center'}}>
-        <div className="wrap">
+      {/* CTA — navy */}
+      <section className="blk navy">
+        <Motif className="motif" style={{left: -130, bottom: -160, transform: 'rotate(-14deg)'}} />
+        <div className="wrap" style={{textAlign: 'center'}}>
           <span className="kicker">Not sure where to start?</span>
           <h2 className="sec" style={{maxWidth: '22ch', margin: '0 auto'}}>Let the Tool Finder match you to the right stack</h2>
           <p className="lead" style={{maxWidth: '56ch', margin: '12px auto 0'}}>Answer a few questions for an evidence-backed shortlist, or build and cost a full stack.</p>
           <div style={{display: 'flex', gap: 10, justifyContent: 'center', marginTop: 22, flexWrap: 'wrap'}}>
-            <Link className="btn btn--primary" href="/tool-finder">Start Tool Finder</Link>
-            <Link className="btn btn--ghost" href="/stacks">Build a stack</Link>
+            <Link className="btn btn--white" href="/tool-finder">Start Tool Finder</Link>
+            <Link className="btn btn--outline" href="/stacks">Build a stack</Link>
           </div>
         </div>
       </section>
