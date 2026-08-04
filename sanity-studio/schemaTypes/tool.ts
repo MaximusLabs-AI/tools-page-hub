@@ -28,7 +28,12 @@ export default defineType({
     defineField({name: 'logo', title: 'Logo', type: 'image', group: 'identity', options: {hotspot: false}}),
     defineField({name: 'oneLineDescription', title: 'One-line description', type: 'text', rows: 2, group: 'identity', validation: (r) => r.required()}),
     defineField({name: 'tagline', title: 'Tagline (short)', type: 'string', group: 'identity', description: 'Short line under the tool name on the landing page. Falls back to the description.'}),
+    defineField({name: 'overview', title: 'Editorial overview', type: 'text', rows: 6, group: 'identity', description: 'Rich, factual introduction used in the “What is” section.'}),
     defineField({name: 'videoUrl', title: 'Demo video (YouTube URL)', type: 'url', group: 'identity', description: 'Embedded as a demo in the "What is" section. Leave empty to show a link to the official site.'}),
+    defineField({name: 'videoTitle', title: 'Video title', type: 'string', group: 'identity'}),
+    defineField({name: 'videoPublisher', title: 'Video publisher', type: 'string', group: 'identity'}),
+    defineField({name: 'videoSourceUrl', title: 'Video verification source', type: 'url', group: 'identity'}),
+    defineField({name: 'videoOfficial', title: 'Published by vendor', type: 'boolean', group: 'identity', initialValue: false}),
     defineField({name: 'formerNames', title: 'Former names / aliases', type: 'array', of: [{type: 'string'}], group: 'identity', description: 'Search aliases so rebrands still resolve (e.g. "Leadfeeder" -> Dealfront).'}),
 
     /* ---- Classification ---- */
@@ -53,6 +58,7 @@ export default defineType({
     defineField({name: 'strengths', title: 'Strengths', type: 'array', of: [{type: 'string'}], group: 'verdict'}),
     defineField({name: 'limitations', title: 'Limitations', type: 'array', of: [{type: 'string'}], group: 'verdict'}),
     defineField({name: 'idealCustomer', title: 'Ideal Customer Profile', type: 'text', rows: 3, group: 'verdict', description: 'Who the tool is best for. Shown in the ICP section; falls back to a derived sentence.'}),
+    defineField({name: 'setupSummary', title: 'Setup and onboarding', type: 'text', rows: 3, group: 'verdict'}),
     defineField({name: 'easeOfUse', title: 'Ease of use (0-100)', type: 'number', group: 'verdict', validation: (r) => r.min(0).max(100), description: 'Drives the "Is it easy to use?" gauge (80+ = Easy, 65-79 = Moderate, below = Advanced).'}),
 
     /* ---- Capabilities & pricing ---- */

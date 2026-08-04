@@ -20,6 +20,18 @@ describe('seed integrity', () => {
     expect(peec.alternatives.length).toBeGreaterThan(0)
     expect(peec.alternatives[0].toolName).toBeTruthy()
   })
+  it('keeps every landing page above the rich-content floor', () => {
+    for (const tool of tools) {
+      expect(tool.overview?.length, `${tool.name} overview`).toBeGreaterThan(300)
+      expect(tool.capabilities.length, `${tool.name} capabilities`).toBeGreaterThanOrEqual(6)
+      expect(tool.strengths.length, `${tool.name} strengths`).toBeGreaterThanOrEqual(3)
+      expect(tool.limitations.length, `${tool.name} limitations`).toBeGreaterThanOrEqual(2)
+      expect(tool.pricingPlans.length, `${tool.name} pricing`).toBeGreaterThanOrEqual(1)
+      expect(tool.pricingPlans.every((p) => (p.features?.length ?? 0) >= 3), `${tool.name} plan features`).toBe(true)
+      expect(tool.alternatives.length, `${tool.name} alternatives`).toBeGreaterThanOrEqual(2)
+      expect(tool.faq.length, `${tool.name} FAQs`).toBeGreaterThanOrEqual(6)
+    }
+  })
   it('seeds AI confidence only on Peec AI, flagged illustrative', () => {
     expect(bySlug('peec-ai').aiConfidence?.dataStatus).toBe('illustrative')
     expect(bySlug('otterly-ai').aiConfidence).toBeUndefined()
@@ -61,8 +73,13 @@ describe('tool finder', () => {
 
 describe('stack builder', () => {
   it('sums numeric prices and excludes custom-priced tools (the $0 bug is fixed)', () => {
-    const cost = calculateStackCost([bySlug('profound'), bySlug('otterly-ai'), bySlug('peec-ai')])
-    expect(cost.excluded).toContain('Profound') // custom-enterprise, not counted as $0
+    const customOnly = {
+      ...bySlug('profound'),
+      name: 'Custom-only product',
+      pricingPlans: bySlug('profound').pricingPlans.filter((p) => p.pricingModel === 'custom-enterprise'),
+    }
+    const cost = calculateStackCost([customOnly, bySlug('otterly-ai'), bySlug('peec-ai')])
+    expect(cost.excluded).toContain('Custom-only product') // custom-enterprise, not counted as $0
     expect(cost.countedTools).toContain('Otterly.AI')
     expect(cost.monthly).toBeGreaterThan(0) // Otterly ($29) + Peec ($95) must total > 0
   })
@@ -71,7 +88,8 @@ describe('stack builder', () => {
     expect(priced.length).toBeGreaterThanOrEqual(20) // was 0 before the fix; 27 of 31 now priced
     expect(bySlug('otterly-ai').pricingPlans[0].price).toBe(29)
     expect(bySlug('peec-ai').pricingPlans[0].price).toBe(95)
-    expect(bySlug('profound').pricingPlans[0].price ?? null).toBeNull() // custom stays null, never $0
+    expect(bySlug('profound').pricingPlans[0].price).toBe(99) // current self-serve Starter price
+    expect(bySlug('profound').pricingPlans.at(-1)?.price ?? null).toBeNull() // Enterprise stays null, never $0
   })
   it('detects overlap when two tools share a category', () => {
     const overlaps = detectOverlap([bySlug('peec-ai'), bySlug('otterly-ai')])

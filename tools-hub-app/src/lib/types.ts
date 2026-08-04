@@ -46,6 +46,11 @@ export interface PricingPlan {
   planName: string
   priceDisplay?: string
   price?: number | null
+  description?: string
+  bestFor?: string
+  features?: string[]
+  popular?: boolean
+  sourceUrl?: string
   pricingModel: PricingModel
   freePlan?: boolean
   freeTrial?: boolean
@@ -119,8 +124,14 @@ export interface Tool {
   logoUrl?: string
   oneLineDescription: string
   tagline?: string
+  overview?: string
   videoUrl?: string
+  videoTitle?: string
+  videoPublisher?: string
+  videoSourceUrl?: string
+  videoOfficial?: boolean
   idealCustomer?: string
+  setupSummary?: string
   easeOfUse?: number
   productType: ProductType
   status: string

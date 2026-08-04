@@ -12,6 +12,7 @@
 import {readFileSync, writeFileSync, mkdirSync} from 'node:fs'
 import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
+import {applyToolEnrichment} from './tool-enrichment.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const p = (f) => join(ROOT, f)
@@ -317,6 +318,8 @@ const EXCLUDED_TOOL_NAMES = new Set([
   'Dealfront (Leadfeeder)', 'RB2B', 'Salespanel', 'Warmly',
 ])
 const keptTools = toolDocs.filter((t) => !EXCLUDED_TOOL_NAMES.has(t.name))
+/* Rich editorial profiles, official videos, and plan details for the curated set. */
+applyToolEnrichment(keptTools)
 // prune categories no kept tool uses; walk the parent chain so ancestors of used cats survive
 const catIndex = new Map(categoryDocs.map((c) => [c._id, c]))
 const usedCatIds = new Set()

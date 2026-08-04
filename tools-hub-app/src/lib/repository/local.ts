@@ -27,8 +27,14 @@ type RawTool = {
   officialUrl: string
   oneLineDescription: string
   tagline?: string
+  overview?: string
   videoUrl?: string
+  videoTitle?: string
+  videoPublisher?: string
+  videoSourceUrl?: string
+  videoOfficial?: boolean
   idealCustomer?: string
+  setupSummary?: string
   easeOfUse?: number
   productType: Tool['productType']
   status: string
@@ -96,8 +102,14 @@ function toTool(t: RawTool): Tool {
     domain: hostname(t.officialUrl),
     oneLineDescription: t.oneLineDescription,
     tagline: t.tagline,
+    overview: t.overview,
     videoUrl: t.videoUrl,
+    videoTitle: t.videoTitle,
+    videoPublisher: t.videoPublisher,
+    videoSourceUrl: t.videoSourceUrl,
+    videoOfficial: t.videoOfficial,
     idealCustomer: t.idealCustomer,
+    setupSummary: t.setupSummary,
     easeOfUse: t.easeOfUse,
     productType: t.productType,
     status: t.status,
