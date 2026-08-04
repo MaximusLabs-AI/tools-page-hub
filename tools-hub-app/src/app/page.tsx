@@ -64,7 +64,7 @@ export default async function CollectionPage() {
       {/* everyone uses — sidebar + card grid */}
       <section className="blk paper" style={{paddingTop: 44, paddingBottom: 44}}>
         <div className="wrap">
-          <h2 className="ctr-h2">Best AI-Era Tools Everyone Uses</h2>
+          <h2 className="ctr-h2 directory-heading">Best AI-Era Tools Everyone Uses</h2>
           <EveryoneUses
             featured={featured}
             groups={productCats.map(({category, tools: t}) => ({code: category.code, name: category.name, tools: t}))}
@@ -75,8 +75,8 @@ export default async function CollectionPage() {
       {/* ultimate directory — sticky category table of contents + compact catalog */}
       <section className="blk grey directory-section" id="directory">
         <div className="directory-wrap">
-          <h2 className="ctr-h2">The Ultimate AI-Era Tools Directory for 2026</h2>
-          <p className="ctr-dek">
+          <h2 className="ctr-h2 directory-heading">The Ultimate AI-Era Tools Directory for 2026</h2>
+          <p className="ctr-dek directory-dek">
             Compare the best AI-search, GEO, SEO, analytics and attribution tools in one place, split by category
             and ranked by fit, so your team can focus on results.
           </p>

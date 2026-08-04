@@ -33,40 +33,17 @@ export default function UltimateDirectory({groups}: {groups: UltimateDirectoryGr
   )
 
   useEffect(() => {
-    let frame = 0
-    const update = () => {
-      frame = 0
-      const closest = items
-        .map(({sectionId}) => ({
-          id: sectionId,
-          rect: document.getElementById(sectionId)?.getBoundingClientRect(),
-        }))
-        .filter((item): item is {id: string; rect: DOMRect} =>
-          Boolean(item.rect && item.rect.bottom > 72 && item.rect.top < window.innerHeight),
-        )
-        .sort((a, b) => Math.abs(a.rect.top - 86) - Math.abs(b.rect.top - 86))[0]
-      if (closest) setActive(closest.id)
-    }
-    const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener('scroll', onScroll, {passive: true})
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      if (frame) window.cancelAnimationFrame(frame)
-    }
+    const hash = window.location.hash.slice(1)
+    if (items.some((item) => item.sectionId === hash)) setActive(hash)
   }, [items])
 
   const jumpTo = (id: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     const target = document.getElementById(id)
     if (!target) return
+    setActive(id)
     target.scrollIntoView({behavior: 'smooth', block: 'start'})
     window.history.replaceState(null, '', `#${id}`)
-    setActive(id)
   }
 
   const prepareTool = (slug: string) => {
@@ -96,17 +73,18 @@ export default function UltimateDirectory({groups}: {groups: UltimateDirectoryGr
       </aside>
 
       <div className="ud__catalog">
-        {items.map(({id, name, slug, definition, tools, sectionId}) => (
-          <section className="udgroup" id={sectionId} key={id}>
+        {items.map(({id, name, slug, definition, tools, sectionId}, groupIndex) => (
+          <section className={`udgroup udgroup--${groupIndex % 4}`} id={sectionId} key={id}>
             <Link className="udgroup__head" href={`/tools/${slug}`} prefetch={false}>
-              <span>
+              <span className="udgroup__marker">{String(groupIndex + 1).padStart(2, '0')}</span>
+              <span className="udgroup__copy">
                 <b>{name}</b>
                 <small>{definition}</small>
               </span>
               <em>{tools.length} tools</em>
             </Link>
             <div className="udgroup__list">
-              {tools.map((tool) => (
+              {tools.map((tool, toolIndex) => (
                 <Link
                   key={tool.id}
                   className="udtool"
@@ -115,6 +93,7 @@ export default function UltimateDirectory({groups}: {groups: UltimateDirectoryGr
                   onMouseEnter={() => prepareTool(tool.slug)}
                   onFocus={() => prepareTool(tool.slug)}
                 >
+                  <span className="udtool__rank">{String(toolIndex + 1).padStart(2, '0')}</span>
                   <ToolLogo domain={tool.domain} name={tool.name} size={30} radius={8} />
                   <span className="udtool__body">
                     <span className="udtool__name">
