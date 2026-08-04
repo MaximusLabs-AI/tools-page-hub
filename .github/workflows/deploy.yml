@@ -1,8 +1,9 @@
 name: Deploy to Vercel
 
-# Deploys the Next.js app (in tools-hub-app/) to Vercel on every push to main.
-# The workflow builds INSIDE tools-hub-app, so it does not depend on the Vercel
-# project's Root Directory setting — leave that as the default (repo root / ".").
+# MANUAL fallback deploy only. Normal deploys run through Vercel's native Git
+# integration, and the Vercel project's Root Directory is set to "tools-hub-app"
+# (do not change it back to repo root, or native builds produce an empty site).
+# Only run this workflow by hand if the Git integration is ever unavailable.
 #
 # Add these three repository secrets (Settings -> Secrets and variables -> Actions):
 #   VERCEL_TOKEN        your Vercel access token
@@ -13,8 +14,10 @@ name: Deploy to Vercel
 # tools-hub-app/.env.production, and the dataset is public (no token needed).
 
 on:
-  push:
-    branches: [main]
+  # Deploys are handled by Vercel's native Git integration, with the project's
+  # Root Directory set to tools-hub-app. This workflow no longer runs on push
+  # (that caused double deploys and hit the free-tier "api-upload-free" cap).
+  # Kept for manual, on-demand runs only.
   workflow_dispatch:
 
 env:

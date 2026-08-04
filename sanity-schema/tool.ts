@@ -1,6 +1,19 @@
 import {defineType, defineField} from 'sanity'
 
 /**
+ * Slugs that Webflow serves at /tools/<slug> (the MaximusLabs free tools).
+ * Publishing a directory tool on one of these would put the Cloudflare Worker
+ * and this CMS in disagreement about who owns the URL, and the free tool loses.
+ * Keep in sync with RESERVED_SLUGS in ../cloudflare-worker-tools.js.
+ */
+const RESERVED_SLUGS = [
+  'ai-content-humanizer',
+  'ai-content-optimizer',
+  'ai-crawlability-checker',
+  'llms-txt-generator',
+]
+
+/**
  * Tool — the core document. Renders the frozen Phase 4B 14-section tool profile
  * PLUS the net-new AI Answer Confidence module.
  * URL: /tools/<slug>  (Next.js dynamic route, ISR).
@@ -22,7 +35,20 @@ export default defineType({
   fields: [
     /* ---- Identity ---- */
     defineField({name: 'name', title: 'Name', type: 'string', group: 'identity', validation: (r) => r.required()}),
-    defineField({name: 'slug', title: 'Slug', type: 'slug', group: 'identity', options: {source: 'name', maxLength: 60}, validation: (r) => r.required()}),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      group: 'identity',
+      options: {source: 'name', maxLength: 60},
+      description: 'Becomes /tools/<slug>. A few slugs are reserved for the MaximusLabs free tools.',
+      validation: (r) =>
+        r.required().custom((value) =>
+          value && RESERVED_SLUGS.includes(value.current)
+            ? `"${value.current}" is reserved for a MaximusLabs free tool served by Webflow. Pick another slug.`
+            : true,
+        ),
+    }),
     defineField({name: 'officialUrl', title: 'Official URL', type: 'url', group: 'identity', validation: (r) => r.required()}),
     defineField({name: 'vendor', title: 'Vendor', type: 'reference', to: [{type: 'vendor'}], group: 'identity'}),
     defineField({name: 'logo', title: 'Logo', type: 'image', group: 'identity', options: {hotspot: false}}),
