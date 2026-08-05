@@ -59,7 +59,7 @@ img { max-width: 100%; }
 
 .nav { display: flex; align-items: center; gap: 4px; margin-left: 44px; }
 .nav__item { position: relative; }
-.nav__btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-family: var(--font); font-size: 16px; font-weight: 500; color: #101011; background: none; border: 0; border-radius: 8px; cursor: pointer; }
+.nav__btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-family: var(--font); font-size: 16px; font-weight: 400; color: #101011; background: none; border: 0; border-radius: 8px; cursor: pointer; }
 .nav__btn:hover { color: var(--accent); }
 .nav__caret { width: 10px; height: 6px; opacity: .55; transition: transform .18s; }
 .nav__item:hover .nav__caret { transform: rotate(180deg); }
@@ -72,7 +72,7 @@ img { max-width: 100%; }
 .nav__grp a:hover { background: var(--marble); color: var(--accent); }
 
 .hdr__cta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.hdr__pricing { padding: 10px 14px; font-size: 16px; font-weight: 500; color: #101011; text-decoration: none; }
+.hdr__pricing { padding: 10px 14px; font-size: 16px; font-weight: 400; color: #101011; text-decoration: none; }
 .hdr__pricing:hover { color: var(--accent); }
 .btn--contact { display: inline-flex; align-items: center; gap: 7px; background: #1e3251; color: #fff; border-radius: 48px; padding: 12px 34px; font-size: 16px; font-weight: 500; text-decoration: none; transition: background .18s; }
 .btn--contact:hover { background: #16263e; color: #fff; }
