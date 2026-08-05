@@ -1,10 +1,11 @@
 import type {Tool} from '@/lib/types'
 import {FIT_ORDER} from '@/lib/types'
+import {resolveProfileConfidence} from './confidence'
 
 /**
  * Tool Finder — the Phase 5 recommendation pseudocode over local data.
  * Scoped to the fields actually present in the seed (category, pricing, fit,
- * AI confidence). Hard exclusions remove candidates before scoring; missing
+ * evidence coverage). Hard exclusions remove candidates before scoring; missing
  * data downgrades to "conditional", never a silent pass or a false "best fit".
  */
 export interface Answers {
@@ -80,11 +81,11 @@ export function findTools(tools: Tool[], answers: Answers): Recommendation[] {
         unmet.push('Pricing not publicly verified')
       }
 
-      // AI-confidence signal (20)
-      if (t.aiConfidence) {
-        score += Math.round((t.aiConfidence.aggregatePct / 100) * 20)
-        fits.push(`${t.aiConfidence.aggregatePct}% AI-answer confidence`)
-      }
+      // Evidence-coverage signal (20). This measures profile substantiation,
+      // not whether the product is better than another candidate.
+      const evidence = resolveProfileConfidence(t)
+      score += Math.round((evidence.aggregatePct / 100) * 20)
+      fits.push(`${evidence.aggregatePct}% evidence coverage`)
 
       // fit-label signal (15)
       const fitIdx = t.quickVerdict ? FIT_ORDER.indexOf(t.quickVerdict.fitLabel) : FIT_ORDER.length

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: '%s | MaximusLabs Tools',
   },
   description:
-    'The tools directory that shows how much AI engines actually trust each tool. Compare AI-answer confidence, features and pricing across 50+ AI-search, SEO, analytics and attribution tools.',
+    'Compare evidence coverage, editorial fit, features and pricing across AI-search, GEO, SEO, analytics and attribution tools.',
 }
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

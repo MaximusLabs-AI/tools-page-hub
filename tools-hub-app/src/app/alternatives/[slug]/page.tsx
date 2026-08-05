@@ -34,7 +34,7 @@ export default async function AlternativesPage({params}: Props) {
         <h1 className="sec">{tool.name} alternatives</h1>
         <p className="lead">
           {alts.length} verified alternatives to {tool.name} by the same job-to-be-done. Each links to its full
-          profile with AI-answer confidence and pricing.
+          profile with evidence coverage, capabilities, and pricing.
         </p>
         <div className="altgrid">
           {alts.map((a) =>

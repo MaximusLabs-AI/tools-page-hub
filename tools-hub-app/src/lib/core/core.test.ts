@@ -109,21 +109,30 @@ describe('ranking', () => {
 })
 
 describe('profile confidence', () => {
-  it('preserves supplied confidence research', () => {
-    expect(resolveProfileConfidence(bySlug('peec-ai'))).toBe(bySlug('peec-ai').aiConfidence)
+  const auditDate = new Date('2026-08-05T00:00:00.000Z')
+
+  it('excludes illustrative AI samples from visible profile scores', () => {
+    const peec = resolveProfileConfidence(bySlug('peec-ai'), auditDate)
+    expect(peec).not.toBe(bySlug('peec-ai').aiConfidence)
+    expect(peec.dataStatus).toBe('estimated')
+    expect(peec.engineScores).toHaveLength(0)
   })
 
-  it('creates bounded editorial estimates without inventing engine scores', () => {
-    const estimated = tools
-      .filter((tool) => !tool.aiConfidence)
-      .map((tool) => resolveProfileConfidence(tool))
+  it('creates transparent evidence audits without inventing engine scores', () => {
+    const estimated = tools.map((tool) => resolveProfileConfidence(tool, auditDate))
+    const scores = new Set(estimated.map((confidence) => confidence.aggregatePct))
 
-    expect(estimated).toHaveLength(30)
+    expect(estimated).toHaveLength(31)
+    expect(scores.size).toBeGreaterThan(1)
     for (const confidence of estimated) {
       expect(confidence.dataStatus).toBe('estimated')
-      expect(confidence.aggregatePct).toBeGreaterThanOrEqual(55)
-      expect(confidence.aggregatePct).toBeLessThanOrEqual(94)
+      expect(confidence.aggregatePct).toBeGreaterThanOrEqual(0)
+      expect(confidence.aggregatePct).toBeLessThanOrEqual(100)
       expect(confidence.engineScores).toHaveLength(0)
+      expect(confidence.evidenceBreakdown).toHaveLength(4)
+      expect(confidence.evidenceBreakdown!.some((dimension) => dimension.scorePct < 100)).toBe(true)
+      expect(confidence.evidenceSources!.length).toBeGreaterThanOrEqual(2)
+      expect(confidence.methodologyNote).toContain('not a product-quality rating')
       expect(confidence.methodologyNote).toContain('not a live AI-engine recommendation measurement')
     }
   })

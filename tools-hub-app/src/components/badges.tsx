@@ -1,5 +1,6 @@
 import type {Tool} from '@/lib/types'
 import {FIT_LABEL_TEXT} from '@/lib/types'
+import {resolveProfileConfidence} from '@/lib/core/confidence'
 
 export function FitPill({tool}: {tool: Tool}) {
   if (!tool.quickVerdict) return null
@@ -12,10 +13,10 @@ export function ProductTypeBadge({tool}: {tool: Tool}) {
 }
 
 export function AiPill({tool}: {tool: Tool}) {
-  if (!tool.aiConfidence) return null
+  const evidence = resolveProfileConfidence(tool)
   return (
     <span className="aipill">
-      <span className="spark" /> AI confidence {tool.aiConfidence.aggregatePct}%
+      <span className="spark" /> Evidence coverage {evidence.aggregatePct}%
     </span>
   )
 }

@@ -11,7 +11,7 @@ export default function DisclosuresPage() {
         <p className="lead">
           Sponsored placements are visually labeled “Sponsored,” physically separated from organic rankings, and
           structurally blocked from affecting any ranking score. No vendor can purchase a fit label or a higher
-          AI-confidence score.
+          evidence-coverage score.
         </p>
         <p className="lead">
           Affiliate links, where present, carry a visible above-the-fold disclosure. Vendor-submitted corrections

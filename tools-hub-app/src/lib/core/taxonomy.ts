@@ -1,5 +1,6 @@
 import type {Category, Tool} from '@/lib/types'
 import {FIT_ORDER} from '@/lib/types'
+import {resolveProfileConfidence} from './confidence'
 
 /** All Level-1 department categories, in order. */
 export function departments(categories: Category[]): Category[] {
@@ -40,25 +41,26 @@ const fitRank = (t: Tool): number => {
   return f ? FIT_ORDER.indexOf(f) : FIT_ORDER.length
 }
 
-/** Rank tools: fit label first, then AI-confidence, then name. */
+/** Rank tools: editorial fit first, then evidence coverage, then name. */
 export function rankTools(tools: Tool[]): Tool[] {
   return [...tools].sort(
     (a, b) =>
       fitRank(a) - fitRank(b) ||
-      (b.aiConfidence?.aggregatePct ?? 0) - (a.aiConfidence?.aggregatePct ?? 0) ||
+      resolveProfileConfidence(b).aggregatePct - resolveProfileConfidence(a).aggregatePct ||
       a.name.localeCompare(b.name),
   )
 }
 
 export const MEDALS = ['🥇', '🥈', '🥉']
 
-/** Featured tools across the whole catalog (AI-confidence first, then fit). */
+/** Featured tools across the whole catalog (editorial fit, then evidence coverage). */
 export function featuredTools(tools: Tool[], n = 8): Tool[] {
   return [...tools]
     .sort(
       (a, b) =>
-        (b.aiConfidence?.aggregatePct ?? 0) - (a.aiConfidence?.aggregatePct ?? 0) ||
-        fitRank(a) - fitRank(b),
+        fitRank(a) - fitRank(b) ||
+        resolveProfileConfidence(b).aggregatePct - resolveProfileConfidence(a).aggregatePct ||
+        a.name.localeCompare(b.name),
     )
     .slice(0, n)
 }

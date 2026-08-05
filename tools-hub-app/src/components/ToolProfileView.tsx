@@ -221,13 +221,13 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                   <span className="section-kicker">MaximusLabs analysis</span>
                   <h2>
                     {confidenceIsEstimate
-                      ? `How confident is the evidence for ${tool.name}?`
+                      ? `How complete is the evidence for ${tool.name}?`
                       : `How much do AI engines trust ${tool.name}?`}
                   </h2>
                 </div>
                 <p className="lead">
                   {confidenceIsEstimate
-                    ? 'A transparent editorial score based on verified capabilities, official pricing sources, profile depth, and evidence recency.'
+                    ? 'A weighted source audit of feature traceability, pricing evidence, decision-support depth, source breadth, and recency. It is not a product-quality score.'
                     : 'A transparent comparison of AI recommendations, product claims, and independent web evidence.'}
                 </p>
                 <AIConfidence ai={confidence} toolName={tool.name} />
@@ -373,12 +373,12 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
               </div>
 
               <div className="tpbox tpbox--ai">
-                <h3>{confidenceIsEstimate ? 'Evidence confidence' : 'AI-answer confidence'}</h3>
+                <h3>{confidenceIsEstimate ? 'Evidence coverage' : 'AI-answer confidence'}</h3>
                 <div className="tpai">
                   <b>{confidence.aggregatePct}%</b>
                   <span>
                     {confidenceIsEstimate
-                      ? 'editorial evidence estimate'
+                      ? 'of the source-audit rubric'
                       : `across ${confidence.engineScores.length} engines`}
                   </span>
                 </div>
@@ -395,8 +395,8 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
 
           <p className="foot-note">
             Product facts and prices were checked against linked official sources. Video attribution is shown explicitly.
-            Peec AI confidence remains illustrative until a live measurement run is connected. Other profile
-            confidence scores are editorial evidence estimates, not live AI-engine measurements.{' '}
+            Every visible evidence score is a deterministic coverage audit, not a product-quality rating or live
+            AI-engine recommendation measurement. Illustrative AI data is not used.{' '}
             <Link href="/methodology">Methodology →</Link>
           </p>
         </div>

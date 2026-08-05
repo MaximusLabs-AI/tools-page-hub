@@ -36,8 +36,8 @@ export default async function CollectionPage() {
           </h1>
           <p className="chero__dek">
             Discover the best AI-search, GEO and SEO tools in 2026. From tracking your brand across ChatGPT to
-            auditing crawlability, this directory helps SaaS and enterprise teams find trusted software, ranked by
-            how much AI engines actually recommend it.
+            auditing crawlability, this directory helps SaaS and enterprise teams compare software by editorial
+            fit, pricing, capabilities, and the strength of its recorded evidence.
           </p>
           <form className="chero__search" action="/search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

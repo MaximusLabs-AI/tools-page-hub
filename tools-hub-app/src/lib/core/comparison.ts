@@ -1,5 +1,6 @@
 import type {Tool} from '@/lib/types'
 import {FIT_LABEL_TEXT} from '@/lib/types'
+import {resolveProfileConfidence} from './confidence'
 
 export interface ComparisonRow {
   label: string
@@ -20,7 +21,7 @@ function freeOf(t: Tool): string {
   return t.pricingPlans.some((p) => p.freePlan) ? 'Yes' : 'No'
 }
 function aiOf(t: Tool): string {
-  return t.aiConfidence ? `${t.aiConfidence.aggregatePct}%` : 'Not measured yet'
+  return `${resolveProfileConfidence(t).aggregatePct}%`
 }
 function typeOf(t: Tool): string {
   return t.productType === 'suite_module' ? 'Suite module' : 'Native platform'
@@ -33,7 +34,7 @@ function typeOf(t: Tool): string {
  */
 export function buildComparison(tools: Tool[]): Comparison {
   const rows: ComparisonRow[] = [
-    row('AI answer confidence', tools, aiOf),
+    row('Evidence coverage', tools, aiOf),
     row('Fit', tools, (t) => (t.quickVerdict ? FIT_LABEL_TEXT[t.quickVerdict.fitLabel] : NPV)),
     row('Entry price', tools, priceOf),
     row('Free plan', tools, freeOf),

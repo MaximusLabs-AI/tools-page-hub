@@ -62,6 +62,9 @@
 .gauge__val span { display: block; font-size: 10.5px; color: var(--sky); text-transform: uppercase; letter-spacing: .12em; font-weight: 800; margin-top: 4px; }
 .gaugewrap .lead { color: #dceaff; font-size: 15.5px; font-weight: 600; line-height: 1.5; margin: 0; }
 .gaugewrap .lead b { color: #fff; }
+.evidence-meaning { display: grid; gap: 7px; margin-top: 14px; }
+.evidence-meaning span { display: block; color: #c8dbf5; font-size: 12.5px; line-height: 1.45; }
+.evidence-meaning b { color: #fff; }
 .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; font-size: 12px; color: #9fc3f5; }
 .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 6px; vertical-align: middle; }
 .engines { margin-top: 24px; display: grid; gap: 12px; }
@@ -108,7 +111,19 @@
 .evidence-card__head b { color: #dceaff; font-size: 13px; }
 .evidence-card__head strong { color: #fff; font-size: 16px; font-weight: 900; }
 .evidence-card .track { height: 9px; }
+.evidence-card p { min-height: 54px; margin: 11px 0 8px; color: #c8dbf5; font-size: 11.5px; line-height: 1.5; }
+.evidence-card__weight { color: #7fa8de; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.evidence-sources { display: grid; grid-template-columns: minmax(180px, .72fr) minmax(0, 1.28fr); gap: 24px; margin-top: 24px; padding: 18px; border: 1px solid rgba(255,255,255,.13); border-radius: 16px; background: rgba(255,255,255,.055); }
+.evidence-sources .kicker { margin-bottom: 5px; }
+.evidence-sources p { margin: 0; color: #c8dbf5; font-size: 12px; line-height: 1.5; }
+.evidence-sources__links { display: flex; align-content: flex-start; flex-wrap: wrap; gap: 8px; }
+.evidence-sources__links a { max-width: 100%; overflow: hidden; padding: 7px 10px; border: 1px solid rgba(68,154,251,.32); border-radius: 9px; background: rgba(0,112,224,.12); color: #dceaff; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; transition: .16s; }
+.evidence-sources__links a:hover { border-color: var(--sky); background: rgba(0,112,224,.24); color: #fff; }
 @media (max-width: 620px) { .evidence-grid { grid-template-columns: 1fr; } }
+@media (max-width: 620px) {
+  .evidence-card p { min-height: 0; }
+  .evidence-sources { grid-template-columns: 1fr; }
+}
 .note-strip { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: #c8dbf5; border-radius: 12px; padding: 12px 16px; font-size: 12.5px; font-weight: 600; margin-top: 18px; }
 .note-strip b { color: #fff; }
 

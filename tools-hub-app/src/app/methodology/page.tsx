@@ -9,15 +9,22 @@ export default function MethodologyPage() {
         <span className="kicker">How this directory works</span>
         <h1 className="sec" style={{fontSize: 38}}>Methodology &amp; evidence standards</h1>
         <p className="lead">
-          Every tool is verified against primary sources, tagged by category and job-to-be-done, and scored for
-          how confidently today’s AI engines recommend it. Where a claim can’t be verified, we label it rather
-          than guess.
+          Every tool is checked against recorded sources, tagged by category and job-to-be-done, and audited for
+          evidence coverage. Where a claim cannot be traced, we reduce the score and show the gap rather than
+          guessing.
         </p>
         <h3 style={{marginTop: 28}}>Evidence &amp; verification</h3>
         <p className="lead">
-          Facts trace to a tiered source hierarchy (official sources first). A claim is <b>Verified</b> only with
-          two or more independent sources, <b>Partially verified</b> with one, and <b>Not publicly verified</b>{' '}
-          otherwise. Pricing is re-checked monthly for the top tools; features quarterly.
+          Facts follow a tiered hierarchy: official product and pricing sources first, then publisher-owned videos,
+          then independent evidence. Pricing and profile checks lose freshness points automatically as their dates
+          age. A missing claim-level or independent citation can never receive full evidence credit.
+        </p>
+        <h3 style={{marginTop: 28}}>Evidence coverage score</h3>
+        <p className="lead">
+          The visible score is deterministic: feature evidence contributes 30%, pricing evidence 25%,
+          decision-support depth 25%, and source breadth plus recency 20%. The score measures how much of our
+          evidence rubric is supported. It is <b>not</b> a product-quality rating, a predicted outcome, or proof
+          that one tool is better than another.
         </p>
         <h3 style={{marginTop: 28}}>Fit labels, not hype</h3>
         <p className="lead">
@@ -27,10 +34,8 @@ export default function MethodologyPage() {
         </p>
         <h3 style={{marginTop: 28}}>AI Answer Confidence</h3>
         <p className="lead">
-          Our signature score measures how often and how positively AI engines recommend a tool for a specific
-          job, against the tool’s own claims and independent reviews. These figures are currently{' '}
-          <b>illustrative sample data</b> and are labeled as such until wired to a live prompt-panel measurement
-          run.
+          AI recommendation scores are displayed only when a live, reproducible prompt-panel dataset is connected.
+          Illustrative sample data is excluded from tool pages and does not affect the evidence audit.
         </p>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import type {Tool} from '@/lib/types'
+import {resolveProfileConfidence} from './confidence'
 
 export interface FilterState {
   pricingModel?: string
@@ -52,7 +53,7 @@ export type SortKey = 'best-fit' | 'ai-confidence' | 'recent' | 'price' | 'name'
 
 export const SORTS: {value: SortKey; label: string}[] = [
   {value: 'best-fit', label: 'Best fit'},
-  {value: 'ai-confidence', label: 'AI confidence'},
+  {value: 'ai-confidence', label: 'Evidence coverage'},
   {value: 'recent', label: 'Recently verified'},
   {value: 'price', label: 'Price (low to high)'},
   {value: 'name', label: 'Name (A to Z)'},
@@ -67,7 +68,10 @@ export function sortTools(tools: Tool[], key: SortKey): Tool[] {
   const arr = [...tools]
   switch (key) {
     case 'ai-confidence':
-      return arr.sort((a, b) => (b.aiConfidence?.aggregatePct ?? -1) - (a.aiConfidence?.aggregatePct ?? -1))
+      return arr.sort(
+        (a, b) =>
+          resolveProfileConfidence(b).aggregatePct - resolveProfileConfidence(a).aggregatePct,
+      )
     case 'recent':
       return arr.sort((a, b) => (b.lastVerifiedAt ?? '').localeCompare(a.lastVerifiedAt ?? ''))
     case 'price':

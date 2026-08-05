@@ -3,8 +3,32 @@ import {AI_ENGINE_LABELS} from '@/lib/types'
 import {Motif} from './Logo'
 import Favicon from './Favicon'
 
+const EVIDENCE_BAND_LABEL = {
+  strong: 'Strong evidence coverage',
+  good: 'Good evidence coverage',
+  partial: 'Partial evidence coverage',
+  limited: 'Limited evidence coverage',
+} as const
+
 function EvidenceConfidence({ai, toolName}: {ai: AiConfidence; toolName: string}) {
   const deg = `${Math.round((ai.aggregatePct / 100) * 360)}deg`
+  const breakdown =
+    ai.evidenceBreakdown ??
+    ai.dimensions.map((dimension) => ({
+      name: dimension.name,
+      scorePct: dimension.webVerifiedPct,
+      weightPct: 25,
+      note: 'Coverage calculated from the evidence recorded in this profile.',
+    }))
+  const band =
+    ai.evidenceBand ??
+    (ai.aggregatePct >= 85
+      ? 'strong'
+      : ai.aggregatePct >= 70
+        ? 'good'
+        : ai.aggregatePct >= 55
+          ? 'partial'
+          : 'limited')
 
   return (
     <div className="mod mod--evidence">
@@ -12,51 +36,69 @@ function EvidenceConfidence({ai, toolName}: {ai: AiConfidence; toolName: string}
       <Motif className="motif b" />
       <div className="mod__head">
         <div>
-          <span className="kicker">✓ Evidence confidence</span>
-          <h2>{toolName} profile confidence</h2>
+          <span className="kicker">Evidence audit</span>
+          <h2>{toolName} evidence coverage</h2>
         </div>
-        <span className="methodpill">Editorial evidence estimate</span>
+        <span className="methodpill">Deterministic source audit</span>
       </div>
       <p className="mod__sub">
-        This score shows how confidently MaximusLabs can substantiate the profile using verified capabilities,
-        official pricing sources, content coverage, and evidence recency.
+        This score measures how much of the profile is supported by traceable and recent evidence. It does not
+        rate product quality, predict results, or mean that a higher-scoring tool is the better choice.
       </p>
 
       <div className="gaugewrap">
         <div className="gauge" style={{['--deg' as string]: deg} as React.CSSProperties}>
           <div className="gauge__val">
             <b>{ai.aggregatePct}%</b>
-            <span>evidence confidence</span>
+            <span>evidence coverage</span>
           </div>
         </div>
         <div>
           <p className="lead">
-            The current profile has <b>{ai.aggregatePct}% editorial evidence confidence</b> for its claims,
-            pricing, and decision-support coverage.
+            <b>{EVIDENCE_BAND_LABEL[band]}.</b> The profile earned {ai.aggregatePct} of 100 available evidence
+            points across the weighted rubric below.
           </p>
-          <div className="legend">
-            <span><i style={{background: 'var(--sky)'}} />Verified profile signal</span>
-            <span><i style={{background: '#34d399'}} />Official source coverage</span>
+          <div className="evidence-meaning">
+            <span><b>It means:</b> more claims can be checked from recorded sources.</span>
+            <span><b>It does not mean:</b> {toolName} is {ai.aggregatePct}% good or best in its category.</span>
           </div>
         </div>
       </div>
 
       <div className="evidence-grid">
-        {ai.dimensions.map((dimension) => (
+        {breakdown.map((dimension) => (
           <article className="evidence-card" key={dimension.name}>
             <div className="evidence-card__head">
               <b>{dimension.name}</b>
-              <strong>{dimension.webVerifiedPct}%</strong>
+              <strong>{dimension.scorePct}%</strong>
             </div>
             <div className="track">
               <div
                 className="bar__fill bar__fill--web"
-                style={{width: `${dimension.webVerifiedPct}%`}}
+                style={{width: `${dimension.scorePct}%`}}
               />
             </div>
+            <p>{dimension.note}</p>
+            <span className="evidence-card__weight">{dimension.weightPct}% of total score</span>
           </article>
         ))}
       </div>
+
+      {(ai.evidenceSources?.length ?? 0) > 0 && (
+        <div className="evidence-sources">
+          <div>
+            <span className="kicker">Recorded sources</span>
+            <p>Open the exact product, pricing, and publisher-owned video pages used by this profile.</p>
+          </div>
+          <div className="evidence-sources__links">
+            {ai.evidenceSources!.map((source) => (
+              <a key={`${source.kind}-${source.url}`} href={source.url} target="_blank" rel="noreferrer">
+                {source.label} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="srcline">
         <b>Method:</b> {ai.methodologyNote}

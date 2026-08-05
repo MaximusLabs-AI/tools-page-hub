@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "audit:confidence": "vite-node --config vitest.config.ts scripts/audit-confidence.ts"
   },
   "dependencies": {
     "next": "14.2.5",

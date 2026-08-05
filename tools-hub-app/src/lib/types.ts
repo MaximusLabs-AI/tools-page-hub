@@ -78,6 +78,17 @@ export interface CitationSource {
   domain: string
   citedCount: number
 }
+export interface EvidenceDimension {
+  name: string
+  scorePct: number
+  weightPct: number
+  note: string
+}
+export interface EvidenceSource {
+  label: string
+  url: string
+  kind: 'official-product' | 'official-pricing' | 'official-video' | 'independent'
+}
 export interface AiConfidence {
   jobContext: string
   aggregatePct: number
@@ -88,6 +99,9 @@ export interface AiConfidence {
   sourcesOfTruth: SourceOfTruth[]
   dimensions: DimensionScore[]
   citations: CitationSource[]
+  evidenceBand?: 'strong' | 'good' | 'partial' | 'limited'
+  evidenceBreakdown?: EvidenceDimension[]
+  evidenceSources?: EvidenceSource[]
 }
 
 export interface AlternativeRef {
