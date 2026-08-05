@@ -51,6 +51,7 @@ export interface PricingPlan {
   features?: string[]
   popular?: boolean
   sourceUrl?: string
+  corroborationUrl?: string
   pricingModel: PricingModel
   freePlan?: boolean
   freeTrial?: boolean

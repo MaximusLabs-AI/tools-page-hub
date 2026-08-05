@@ -26,6 +26,11 @@ export default function MethodologyPage() {
           evidence rubric is supported. It is <b>not</b> a product-quality rating, a predicted outcome, or proof
           that one tool is better than another.
         </p>
+        <p className="lead">
+          A dimension reaches 100% only when every required input is present. For pricing, that means complete
+          plan records, a current plan-specific official source, and a separately recorded corroboration link.
+          Official-source-only pricing can score highly, but it does not receive the corroboration points.
+        </p>
         <h3 style={{marginTop: 28}}>Fit labels, not hype</h3>
         <p className="lead">
           Rankings lead with qualitative fit labels (Best fit, Strong fit, Conditional fit, Weak fit,

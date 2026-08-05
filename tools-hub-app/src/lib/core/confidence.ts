@@ -48,6 +48,43 @@ const freshnessScore = (dateValue: string | undefined, now: Date) => {
   return 0
 }
 
+const hostname = (value: string | undefined) => {
+  if (!value) return ''
+  try {
+    return new URL(value).hostname.toLowerCase().replace(/^www\./, '')
+  } catch {
+    return ''
+  }
+}
+
+const samePublisher = (left: string | undefined, right: string | undefined) => {
+  const leftHost = hostname(left)
+  const rightHost = hostname(right)
+  return Boolean(
+    leftHost &&
+      rightHost &&
+      (leftHost === rightHost ||
+        leftHost.endsWith(`.${rightHost}`) ||
+        rightHost.endsWith(`.${leftHost}`)),
+  )
+}
+
+const isPlanSpecificSource = (
+  plan: Tool['pricingPlans'][number],
+  officialUrl: string,
+) => {
+  if (!plan.sourceUrl) return false
+  if (plan.freePlan || plan.pricingModel === 'free' || plan.price === 0) return true
+  if (!samePublisher(plan.sourceUrl, officialUrl)) return false
+  try {
+    return /(?:pricing|plans?|subscriptions?|billing|packages?|rates?)/i.test(
+      new URL(plan.sourceUrl).pathname,
+    )
+  } catch {
+    return false
+  }
+}
+
 const evidenceBand = (score: number): NonNullable<AiConfidence['evidenceBand']> => {
   if (score >= 85) return 'strong'
   if (score >= 70) return 'good'
@@ -108,12 +145,22 @@ export function resolveProfileConfidence(tool: Tool, now = new Date()): AiConfid
   const planFreshness = average(
     tool.pricingPlans.map((plan) => freshnessScore(plan.priceLastChecked, now)),
   )
+  const planSpecificSourceCoverage = percent(
+    tool.pricingPlans.filter((plan) => isPlanSpecificSource(plan, tool.officialUrl)).length,
+    tool.pricingPlans.length,
+  )
+  const independentlyCorroboratedPlans = percent(
+    tool.pricingPlans.filter((plan) => Boolean(plan.corroborationUrl)).length,
+    tool.pricingPlans.length,
+  )
   const pricingEvidence = tool.pricingPlans.length
     ? clamp(
-        planVerification * 0.25 +
-          planSourceCoverage * 0.35 +
+        planVerification * 0.2 +
+          planSourceCoverage * 0.2 +
           planDetailCoverage * 0.2 +
-          planFreshness * 0.2,
+          planFreshness * 0.15 +
+          planSpecificSourceCoverage * 0.15 +
+          independentlyCorroboratedPlans * 0.1,
         0,
         100,
       )
@@ -153,7 +200,17 @@ export function resolveProfileConfidence(tool: Tool, now = new Date()): AiConfid
       .map((plan) => ({
         label: `${plan.planName} pricing source`,
         url: plan.sourceUrl!,
-        kind: 'official-pricing' as const,
+        kind:
+          plan.thirdPartyEstimate || !samePublisher(plan.sourceUrl, tool.officialUrl)
+            ? 'independent' as const
+            : 'official-pricing' as const,
+      })),
+    ...tool.pricingPlans
+      .filter((plan) => plan.corroborationUrl)
+      .map((plan) => ({
+        label: `${plan.planName} independent corroboration`,
+        url: plan.corroborationUrl!,
+        kind: 'independent' as const,
       })),
     ...(tool.videoOfficial && tool.videoSourceUrl
       ? [{
@@ -188,7 +245,7 @@ export function resolveProfileConfidence(tool: Tool, now = new Date()): AiConfid
       name: 'Pricing evidence',
       scorePct: pricingEvidence,
       weightPct: 25,
-      note: `${tool.pricingPlans.filter((plan) => plan.sourceUrl).length} of ${tool.pricingPlans.length} plans link to a pricing source; freshness decays automatically as checks age.`,
+      note: `${tool.pricingPlans.filter((plan) => plan.sourceUrl).length} of ${tool.pricingPlans.length} plans link to a source, ${tool.pricingPlans.filter((plan) => isPlanSpecificSource(plan, tool.officialUrl)).length} use a plan-specific or permanent-free source, and ${tool.pricingPlans.filter((plan) => plan.corroborationUrl).length} have a separately recorded corroboration link. A 100% score requires all three.`,
     },
     {
       name: 'Decision-support depth',

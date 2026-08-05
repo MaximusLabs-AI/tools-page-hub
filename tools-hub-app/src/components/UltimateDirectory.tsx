@@ -53,9 +53,9 @@ export default function UltimateDirectory({groups}: {groups: UltimateDirectoryGr
   return (
     <div className="ud">
       <aside className="ud__side" aria-label="Tool categories">
-        <span className="ud__eyebrow">Browse the directory</span>
-        <h3>AI tools by category</h3>
-        <p>Jump directly to the tool category you need.</p>
+        <span className="ud__eyebrow">Explore the collection</span>
+        <h3>Tools by category</h3>
+        <p>Choose a category to browse every relevant platform in the directory.</p>
         <nav className="ud__chips">
           {items.map(({name, tools, sectionId}) => (
             <a

@@ -136,4 +136,28 @@ describe('profile confidence', () => {
       expect(confidence.methodologyNote).toContain('not a live AI-engine recommendation measurement')
     }
   })
+
+  it('awards 100% pricing evidence only when every plan has separate corroboration', () => {
+    const peec = bySlug('peec-ai')
+    const officialOnly = resolveProfileConfidence(peec, auditDate)
+    const corroborated = resolveProfileConfidence(
+      {
+        ...peec,
+        pricingPlans: peec.pricingPlans.map((plan, index) => ({
+          ...plan,
+          corroborationUrl: `https://evidence.example/peec-plan-${index + 1}`,
+        })),
+      },
+      auditDate,
+    )
+    const officialPricing = officialOnly.evidenceBreakdown?.find(
+      (dimension) => dimension.name === 'Pricing evidence',
+    )
+    const corroboratedPricing = corroborated.evidenceBreakdown?.find(
+      (dimension) => dimension.name === 'Pricing evidence',
+    )
+
+    expect(officialPricing?.scorePct).toBeLessThan(100)
+    expect(corroboratedPricing?.scorePct).toBe(100)
+  })
 })
