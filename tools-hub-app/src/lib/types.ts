@@ -81,7 +81,7 @@ export interface CitationSource {
 export interface AiConfidence {
   jobContext: string
   aggregatePct: number
-  dataStatus: 'illustrative' | 'live'
+  dataStatus: 'illustrative' | 'live' | 'estimated'
   methodologyNote?: string
   lastCheckedAt?: string
   engineScores: AiEngineScore[]

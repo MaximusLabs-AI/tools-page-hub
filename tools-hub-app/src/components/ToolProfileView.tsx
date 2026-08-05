@@ -6,6 +6,8 @@ import AIConfidence from './AIConfidence'
 import Comments from './Comments'
 import {AiPill} from './badges'
 import VideoPlayer from './VideoPlayer'
+import PricingRail from './PricingRail'
+import {resolveProfileConfidence} from '@/lib/core/confidence'
 
 const BILLING: Record<PricingModel, string> = {
   free: 'Free',
@@ -64,6 +66,8 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
   const setup =
     tool.setupSummary ||
     `Start with one representative project and validate the output against a real workflow before expanding coverage.`
+  const confidence = resolveProfileConfidence(tool)
+  const confidenceIsEstimate = confidence.dataStatus === 'estimated'
 
   return (
     <>
@@ -212,18 +216,22 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                 </div>
               </section>
 
-              {tool.aiConfidence && (
-                <section className="tsec" id="ai-confidence">
-                  <div className="tsec__head">
-                    <span className="section-kicker">MaximusLabs analysis</span>
-                    <h2>How much do AI engines trust {tool.name}?</h2>
-                  </div>
-                  <p className="lead">
-                    A transparent comparison of AI recommendations, product claims, and independent web evidence.
-                  </p>
-                  <AIConfidence ai={tool.aiConfidence} toolName={tool.name} />
-                </section>
-              )}
+              <section className="tsec" id="ai-confidence">
+                <div className="tsec__head">
+                  <span className="section-kicker">MaximusLabs analysis</span>
+                  <h2>
+                    {confidenceIsEstimate
+                      ? `How confident is the evidence for ${tool.name}?`
+                      : `How much do AI engines trust ${tool.name}?`}
+                  </h2>
+                </div>
+                <p className="lead">
+                  {confidenceIsEstimate
+                    ? 'A transparent editorial score based on verified capabilities, official pricing sources, profile depth, and evidence recency.'
+                    : 'A transparent comparison of AI recommendations, product claims, and independent web evidence.'}
+                </p>
+                <AIConfidence ai={confidence} toolName={tool.name} />
+              </section>
 
               <section className="tsec" id="pricing">
                 <div className="tsec__head tsec__head--split">
@@ -236,7 +244,7 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                 <p className="lead">
                   Free, paid, usage-based, and enterprise options are shown separately. Prices can vary by billing term, currency, usage, and region.
                 </p>
-                <div className="pricing-grid">
+                <PricingRail count={tool.pricingPlans.length} label={tool.name}>
                   {tool.pricingPlans.map((plan) => (
                     <article
                       className={`pricecard${plan.popular ? ' pricecard--popular' : ''}${plan.freePlan ? ' pricecard--free' : ''}`}
@@ -267,7 +275,7 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                       </a>
                     </article>
                   ))}
-                </div>
+                </PricingRail>
               </section>
 
               <section className="tsec">
@@ -364,16 +372,18 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
                 </ul>
               </div>
 
-              {tool.aiConfidence && (
-                <div className="tpbox tpbox--ai">
-                  <h3>AI-answer confidence</h3>
-                  <div className="tpai">
-                    <b>{tool.aiConfidence.aggregatePct}%</b>
-                    <span>across {tool.aiConfidence.engineScores.length} engines</span>
-                  </div>
-                  <a href="#ai-confidence" className="tpbox__link">See the breakdown →</a>
+              <div className="tpbox tpbox--ai">
+                <h3>{confidenceIsEstimate ? 'Evidence confidence' : 'AI-answer confidence'}</h3>
+                <div className="tpai">
+                  <b>{confidence.aggregatePct}%</b>
+                  <span>
+                    {confidenceIsEstimate
+                      ? 'editorial evidence estimate'
+                      : `across ${confidence.engineScores.length} engines`}
+                  </span>
                 </div>
-              )}
+                <a href="#ai-confidence" className="tpbox__link">See the breakdown →</a>
+              </div>
 
               <div className="tpbox">
                 <h3>Is {tool.name} easy to use?</h3>
@@ -385,7 +395,8 @@ export default function ToolProfileView({tool, allTools}: {tool: Tool; allTools:
 
           <p className="foot-note">
             Product facts and prices were checked against linked official sources. Video attribution is shown explicitly.
-            AI-confidence figures remain illustrative until a live measurement run is connected.{' '}
+            Peec AI confidence remains illustrative until a live measurement run is connected. Other profile
+            confidence scores are editorial evidence estimates, not live AI-engine measurements.{' '}
             <Link href="/methodology">Methodology →</Link>
           </p>
         </div>

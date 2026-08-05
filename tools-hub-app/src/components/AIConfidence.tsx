@@ -3,8 +3,72 @@ import {AI_ENGINE_LABELS} from '@/lib/types'
 import {Motif} from './Logo'
 import Favicon from './Favicon'
 
+function EvidenceConfidence({ai, toolName}: {ai: AiConfidence; toolName: string}) {
+  const deg = `${Math.round((ai.aggregatePct / 100) * 360)}deg`
+
+  return (
+    <div className="mod mod--evidence">
+      <Motif className="motif a" />
+      <Motif className="motif b" />
+      <div className="mod__head">
+        <div>
+          <span className="kicker">✓ Evidence confidence</span>
+          <h2>{toolName} profile confidence</h2>
+        </div>
+        <span className="methodpill">Editorial evidence estimate</span>
+      </div>
+      <p className="mod__sub">
+        This score shows how confidently MaximusLabs can substantiate the profile using verified capabilities,
+        official pricing sources, content coverage, and evidence recency.
+      </p>
+
+      <div className="gaugewrap">
+        <div className="gauge" style={{['--deg' as string]: deg} as React.CSSProperties}>
+          <div className="gauge__val">
+            <b>{ai.aggregatePct}%</b>
+            <span>evidence confidence</span>
+          </div>
+        </div>
+        <div>
+          <p className="lead">
+            The current profile has <b>{ai.aggregatePct}% editorial evidence confidence</b> for its claims,
+            pricing, and decision-support coverage.
+          </p>
+          <div className="legend">
+            <span><i style={{background: 'var(--sky)'}} />Verified profile signal</span>
+            <span><i style={{background: '#34d399'}} />Official source coverage</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="evidence-grid">
+        {ai.dimensions.map((dimension) => (
+          <article className="evidence-card" key={dimension.name}>
+            <div className="evidence-card__head">
+              <b>{dimension.name}</b>
+              <strong>{dimension.webVerifiedPct}%</strong>
+            </div>
+            <div className="track">
+              <div
+                className="bar__fill bar__fill--web"
+                style={{width: `${dimension.webVerifiedPct}%`}}
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="srcline">
+        <b>Method:</b> {ai.methodologyNote}
+      </div>
+    </div>
+  )
+}
+
 /** The signature "AI Answer Confidence" module. Bars render at final width. */
 export default function AIConfidence({ai, toolName}: {ai: AiConfidence; toolName: string}) {
+  if (ai.dataStatus === 'estimated') return <EvidenceConfidence ai={ai} toolName={toolName} />
+
   const deg = `${Math.round((ai.aggregatePct / 100) * 360)}deg`
   return (
     <div className="mod">

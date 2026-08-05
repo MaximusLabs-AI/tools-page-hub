@@ -73,41 +73,44 @@ export default function UltimateDirectory({groups}: {groups: UltimateDirectoryGr
       </aside>
 
       <div className="ud__catalog">
-        {items.map(({id, name, slug, definition, tools, sectionId}, groupIndex) => (
-          <section className={`udgroup udgroup--${groupIndex % 4}`} id={sectionId} key={id}>
-            <Link className="udgroup__head" href={`/tools/${slug}`} prefetch={false}>
-              <span className="udgroup__marker">{String(groupIndex + 1).padStart(2, '0')}</span>
-              <span className="udgroup__copy">
-                <b>{name}</b>
-                <small>{definition}</small>
-              </span>
-              <em>{tools.length} tools</em>
-            </Link>
-            <div className="udgroup__list">
-              {tools.map((tool, toolIndex) => (
-                <Link
-                  key={tool.id}
-                  className="udtool"
-                  href={`/tools/${tool.slug}`}
-                  prefetch={false}
-                  onMouseEnter={() => prepareTool(tool.slug)}
-                  onFocus={() => prepareTool(tool.slug)}
-                >
-                  <span className="udtool__rank">{String(toolIndex + 1).padStart(2, '0')}</span>
-                  <ToolLogo domain={tool.domain} name={tool.name} size={30} radius={8} />
-                  <span className="udtool__body">
-                    <span className="udtool__name">
-                      {tool.name}
-                      {tool.free && <i>Free</i>}
+        {items.map(({id, name, slug, definition, tools, sectionId}, groupIndex) => {
+          const accent = Math.floor(groupIndex / 2) % 2 === 0 ? 'navy' : 'blue'
+          return (
+            <section className={`udgroup udgroup--${accent}`} id={sectionId} key={id}>
+              <Link className="udgroup__head" href={`/tools/${slug}`} prefetch={false}>
+                <span className="udgroup__marker">{String(groupIndex + 1).padStart(2, '0')}</span>
+                <span className="udgroup__copy">
+                  <b>{name}</b>
+                  <small>{definition}</small>
+                </span>
+                <em>{tools.length} tools</em>
+              </Link>
+              <div className="udgroup__list">
+                {tools.map((tool, toolIndex) => (
+                  <Link
+                    key={tool.id}
+                    className="udtool"
+                    href={`/tools/${tool.slug}`}
+                    prefetch={false}
+                    onMouseEnter={() => prepareTool(tool.slug)}
+                    onFocus={() => prepareTool(tool.slug)}
+                  >
+                    <span className="udtool__rank">{String(toolIndex + 1).padStart(2, '0')}</span>
+                    <ToolLogo domain={tool.domain} name={tool.name} size={30} radius={8} />
+                    <span className="udtool__body">
+                      <span className="udtool__name">
+                        {tool.name}
+                        {tool.free && <i>Free</i>}
+                      </span>
+                      <small>{tool.description}</small>
                     </span>
-                    <small>{tool.description}</small>
-                  </span>
-                  <span className="udtool__arrow" aria-hidden="true">›</span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ))}
+                    <span className="udtool__arrow" aria-hidden="true">›</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )
+        })}
       </div>
     </div>
   )

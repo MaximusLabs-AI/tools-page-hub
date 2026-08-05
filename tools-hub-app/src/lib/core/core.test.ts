@@ -5,6 +5,7 @@ import {buildComparison} from './comparison'
 import {findTools} from './toolFinder'
 import {calculateStackCost, detectOverlap} from './stackBuilder'
 import {rankTools} from './taxonomy'
+import {resolveProfileConfidence} from './confidence'
 
 const tools = await localRepository.getTools()
 const bySlug = (s: string) => tools.find((t) => t.slug === s)!
@@ -104,5 +105,26 @@ describe('ranking', () => {
     const firstInsufficient = ranked.findIndex((t) => t.quickVerdict?.fitLabel === 'insufficient-evidence')
     const lastStrong = ranked.map((t) => t.quickVerdict?.fitLabel).lastIndexOf('strong-fit')
     if (firstInsufficient >= 0 && lastStrong >= 0) expect(lastStrong).toBeLessThan(firstInsufficient)
+  })
+})
+
+describe('profile confidence', () => {
+  it('preserves supplied confidence research', () => {
+    expect(resolveProfileConfidence(bySlug('peec-ai'))).toBe(bySlug('peec-ai').aiConfidence)
+  })
+
+  it('creates bounded editorial estimates without inventing engine scores', () => {
+    const estimated = tools
+      .filter((tool) => !tool.aiConfidence)
+      .map((tool) => resolveProfileConfidence(tool))
+
+    expect(estimated).toHaveLength(30)
+    for (const confidence of estimated) {
+      expect(confidence.dataStatus).toBe('estimated')
+      expect(confidence.aggregatePct).toBeGreaterThanOrEqual(55)
+      expect(confidence.aggregatePct).toBeLessThanOrEqual(94)
+      expect(confidence.engineScores).toHaveLength(0)
+      expect(confidence.methodologyNote).toContain('not a live AI-engine recommendation measurement')
+    }
   })
 })
