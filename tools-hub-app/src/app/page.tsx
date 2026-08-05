@@ -61,9 +61,9 @@ export default async function CollectionPage() {
         </div>
       </section>
 
-      {/* everyone uses — sidebar + card grid */}
-      <section className="blk paper" style={{paddingTop: 44, paddingBottom: 44}}>
-        <div className="wrap">
+      {/* everyone uses — full-width category browser + richer card grid */}
+      <section className="blk paper everyone-section" id="popular-tools">
+        <div className="everyone-wrap">
           <h2 className="ctr-h2 directory-heading">Best AI-Era Tools Everyone Uses</h2>
           <EveryoneUses
             featured={featured}
