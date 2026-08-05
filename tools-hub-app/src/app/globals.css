@@ -55,7 +55,7 @@ img { max-width: 100%; }
 .hdr { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid #e6e0d9; }
 .hdr__in { display: flex; align-items: center; gap: 8px; height: 90px; }
 .brand { display: inline-flex; align-items: center; }
-.brand .wordmark { height: 34px; width: auto; display: block; }
+.brand .logomark { height: 48px; width: 48px; display: block; }
 
 .nav { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
 .nav__item { position: relative; }

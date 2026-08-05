@@ -1,7 +1,7 @@
 'use client'
 
 import {useState} from 'react'
-import {Wordmark} from './Logo'
+import {LogoMark} from './Logo'
 
 // The hub is served under maximuslabs.ai (via URL rewrite), so this header is an
 // exact replica of the live maximuslabs.ai navigation. Links are absolute to the
@@ -100,7 +100,7 @@ export default function Header() {
     <header className="hdr">
       <div className="wrap hdr__in">
         <a className="brand" href={SITE} aria-label="MaximusLabs">
-          <Wordmark />
+          <LogoMark />
         </a>
 
         <nav className="nav" aria-label="Primary">
