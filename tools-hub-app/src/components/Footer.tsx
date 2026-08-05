@@ -1,78 +1,141 @@
 import {Wordmark} from './Logo'
 
+// Exact replica of the live maximuslabs.ai footer. Absolute links to the main
+// domain so navigation is identical whether embedded (URL rewrite) or standalone.
+const SITE = 'https://www.maximuslabs.ai'
+const abs = (p: string) => (p.startsWith('http') ? p : SITE + p)
+
+const COLUMNS: {heading: string; links: [string, string][]}[] = [
+  {
+    heading: 'Services',
+    links: [
+      ['Generative Engine Optimization', '/services/geo'],
+      ['Answer Engine Optimization', '/services/aeo'],
+      ['Agentic Commerce', '/services/agentic-commerce'],
+      ['B2B SEO', '/services/b2b-seo'],
+    ],
+  },
+  {
+    heading: 'Industries',
+    links: [
+      ['SaaS | AI', '/services/industries/ai-saas'],
+      ['Ecommerce', '/services/industries/ecommerce'],
+      ['Fintech', '/services/industries/financial'],
+    ],
+  },
+  {
+    heading: 'Answer Engine Optimization',
+    links: [
+      ['What is AEO?', '/answer-engine-optimizations/aeo'],
+      ['AEO vs SEO', '/answer-engine-optimizations/aeo-vs-seo'],
+      ['Best AEO Agencies', '/answer-engine-optimizations/best-aeo-agencies'],
+      ['Enterprise AEO Agencies', '/answer-engine-optimizations/enterprise-aeo-agencies'],
+      ['Ecommerce AEO Agencies', '/answer-engine-optimizations/ecommerce-aeo-geo-agencies'],
+      ['Best AEO Tools', '/answer-engine-optimizations/aeo-tools-comparison'],
+      ['AEO Implementation Checklist', '/answer-engine-optimizations/aeo-implementation-checklist-50-best-practices-ai-search'],
+      ['AI Search Tracking Tools', '/answer-engine-optimizations/ai-search-visibility-brand-mentions-tracking-tools'],
+    ],
+  },
+  {
+    heading: 'Generative Engine Optimization',
+    links: [
+      ['What is GEO?', '/blog/what-is-generative-engine-optimization-geo'],
+      ['GEO vs Traditional SEO', '/generative-engine-optimization/geo-vs-traditional-seo-comparison'],
+      ['Best GEO Agencies', '/generative-engine-optimization/best-geo-agency-services'],
+      ['GEO Strategy Framework', '/generative-engine-optimization/geo-strategy-framework'],
+      ['GEO Case Studies', '/generative-engine-optimization/geo-case-studies-success-stories'],
+      ['GEO Market Analysis 2026', '/generative-engine-optimization/geo-market-analysis'],
+      ['Top GEO Tools', '/generative-engine-optimization/top-geo-tools-platforms'],
+      ['Technical GEO Implementation', '/generative-engine-optimization/technical-geo-implementation'],
+      ['Peec AI Alternatives', '/answer-engine-optimizations/top-peec-ai-alternatives-competitors'],
+    ],
+  },
+  {
+    heading: 'Tools',
+    links: [
+      ['AI Content Humanizer', '/tools/ai-content-humanizer'],
+      ['AI Content Optimizer', '/tools/ai-content-optimizer'],
+      ['AI Crawlability Checker', '/tools/ai-crawlability-checker'],
+      ['LLM Text Generator', '/tools/llms-txt-generator'],
+    ],
+  },
+  {
+    heading: 'Resources',
+    links: [
+      ['Blogs', '/blog'],
+      ['AI Search 101', '/ai-search-101'],
+      ['Industry Reports', '/resources/reports'],
+      ['ChatGPT SEO Guide', '/services/platforms/chatgpt'],
+      ['Perplexity SEO Guide', '/services/platforms/perplexity'],
+      ['Gemini Guide', '/services/platforms/google-ai-gemini'],
+      ['Claude Guide', '/services/platforms/anthropic-claude'],
+    ],
+  },
+  {
+    heading: 'Company',
+    links: [
+      ['About Us', '/company/about-us'],
+      ['Case Studies', '/company/case-studies/case-studies-collection'],
+      ['Career', '/company/careers'],
+    ],
+  },
+]
+
+const LEGAL: [string, string][] = [
+  ['Refund Policy', '/others/refund-policy'],
+  ['Privacy Policy', '/others/privacy-policy'],
+  ['Terms of Service', '/others/terms-of-service'],
+]
+
 export default function Footer() {
   return (
     <footer className="ft">
       <div className="wrap">
         <div className="ft__top">
           <div className="ft__brand">
-            <Wordmark white className="wordmark-w" />
+            <a href={SITE} aria-label="MaximusLabs">
+              <Wordmark />
+            </a>
             <p>
               Maximus Labs helps you rank on Google, ChatGPT, and beyond. Reach out today to build your
               AI-first, SEO-strong growth engine.
             </p>
+            <a
+              className="ft__social"
+              href="https://www.linkedin.com/company/maximus-labs-ai/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="MaximusLabs on LinkedIn"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">
+                <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM9 9h3.83v1.64h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.14V21H17.5v-5.44c0-1.3-.02-2.97-1.81-2.97-1.82 0-2.1 1.42-2.1 2.88V21H9z" />
+              </svg>
+            </a>
           </div>
-          <a className="btn btn--sky" href="https://maximuslabs.ai" target="_blank" rel="noreferrer">
-            Contact Us <span className="arrow">→</span>
+          <a className="btn--contact" href={abs('/contact-us')}>
+            Contact Us <span aria-hidden="true">→</span>
           </a>
         </div>
+
         <div className="ft__cols">
-          <div>
-            <h5>Services</h5>
-            <ul>
-              <li><a href="#">Generative Engine Optimization</a></li>
-              <li><a href="#">Answer Engine Optimization</a></li>
-              <li><a href="#">Agentic Commerce</a></li>
-              <li><a href="#">B2B SEO</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Industries</h5>
-            <ul>
-              <li><a href="#">SaaS | AI</a></li>
-              <li><a href="#">Ecommerce</a></li>
-              <li><a href="#">Fintech</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Answer Engine Optimization</h5>
-            <ul>
-              <li><a href="#">What is AEO?</a></li>
-              <li><a href="#">AEO vs SEO</a></li>
-              <li><a href="#">Best AEO Tools</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Generative Engine Optimization</h5>
-            <ul>
-              <li><a href="#">What is GEO?</a></li>
-              <li><a href="#">Top GEO Tools</a></li>
-              <li><a href="#">Peec AI Alternatives</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Resources</h5>
-            <ul>
-              <li><a href="#">Blogs</a></li>
-              <li><a href="#">AI Search 101</a></li>
-              <li><a href="#">Industry Reports</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Company</h5>
-            <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Case Studies</a></li>
-              <li><a href="#">Career</a></li>
-            </ul>
-          </div>
+          {COLUMNS.map((col) => (
+            <div key={col.heading}>
+              <h5>{col.heading}</h5>
+              <ul>
+                {col.links.map(([label, href]) => (
+                  <li key={href}><a href={abs(href)}>{label}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
+
         <div className="ft__bottom">
-          <span>Copyright © 2025 Maximus Labs. All rights reserved.</span>
+          <span>Copyright © 2025 Maximus Labs | All rights reserved.</span>
           <span className="ft__legal">
-            <a href="#">Refund Policy</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            {LEGAL.map(([label, href]) => (
+              <a key={href} href={abs(href)}>{label}</a>
+            ))}
           </span>
         </div>
       </div>
