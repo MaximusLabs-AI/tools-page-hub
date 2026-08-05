@@ -57,7 +57,7 @@ img { max-width: 100%; }
 .brand { display: inline-flex; align-items: center; }
 .brand .logomark { height: 48px; width: 48px; display: block; }
 
-.nav { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
+.nav { display: flex; align-items: center; gap: 4px; margin-left: 44px; }
 .nav__item { position: relative; }
 .nav__btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-family: var(--font); font-size: 16px; font-weight: 500; color: #101011; background: none; border: 0; border-radius: 8px; cursor: pointer; }
 .nav__btn:hover { color: var(--accent); }
@@ -71,7 +71,7 @@ img { max-width: 100%; }
 .nav__grp a { display: block; padding: 9px 10px; border-radius: 8px; font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; white-space: nowrap; }
 .nav__grp a:hover { background: var(--marble); color: var(--accent); }
 
-.hdr__cta { display: flex; align-items: center; gap: 10px; }
+.hdr__cta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .hdr__pricing { padding: 10px 14px; font-size: 16px; font-weight: 500; color: #101011; text-decoration: none; }
 .hdr__pricing:hover { color: var(--accent); }
 .btn--contact { display: inline-flex; align-items: center; gap: 7px; background: #1e3251; color: #fff; border-radius: 48px; padding: 12px 34px; font-size: 16px; font-weight: 500; text-decoration: none; transition: background .18s; }
@@ -396,23 +396,35 @@ table.cmp__t { border-collapse: collapse; width: 100%; min-width: 680px; font-si
 
 /* ===== Site footer — replica of maximuslabs.ai (light) ===== */
 .ft { background: #f3f3f6; color: #101011; padding: 56px 0 30px; border-top: 1px solid #e6e0d9; }
-.ft__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; padding-bottom: 30px; margin-bottom: 32px; border-bottom: 1px solid #e0ddd6; }
-.ft__brand { max-width: 42ch; }
-.ft__brand .wordmark { height: 32px; width: auto; display: block; margin-bottom: 16px; }
-.ft__brand p { color: #333; font-size: 15.5px; margin: 0 0 18px; line-height: 1.6; }
-.ft__social { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: #1e3251; color: #fff; }
-.ft__social:hover { background: #16263e; }
-.ft__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(176px, 1fr)); gap: 34px 24px; }
-.ft h5 { color: #000; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .01em; margin: 0 0 16px; }
-.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.ft ul a { font-size: 16px; color: #101011; text-decoration: none; }
+.ft__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; padding-bottom: 44px; margin-bottom: 44px; border-bottom: 1px solid #e0ddd6; }
+.ft__brand { max-width: 40ch; }
+.ft__brand .wordmark { height: 32px; width: auto; display: block; margin-bottom: 18px; }
+.ft__brand p { color: #333; font-size: 16px; margin: 0; line-height: 1.6; }
+/* footer contact pill: white circle + arrow on the LEFT, then label */
+.ft__actions { display: flex; align-items: center; gap: 18px; }
+.btn--contact-ft { display: inline-flex; align-items: center; gap: 12px; background: #1e3251; color: #fff; border-radius: 48px; padding: 7px 30px 7px 7px; font-size: 16px; font-weight: 500; text-decoration: none; transition: background .18s; }
+.btn--contact-ft:hover { background: #16263e; color: #fff; }
+.btn--contact-ft .btn__circle { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: #fff; color: #1e3251; font-size: 18px; font-weight: 700; flex: none; }
+.ft__li { color: #8a8a8a; display: inline-flex; }
+.ft__li:hover { color: #1e3251; }
+
+/* six columns; column 1 stacks Services + Industries. Single-line links (no wrap). */
+.ft__cols { display: flex; justify-content: space-between; gap: 24px; }
+.ft__col { display: flex; flex-direction: column; gap: 40px; }
+.ft h5 { color: #000; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .01em; margin: 0 0 18px; }
+.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ft ul a { font-size: 16px; line-height: 1.5; color: #101011; text-decoration: none; white-space: nowrap; }
 .ft ul a:hover { color: var(--accent); }
-.ft__bottom { margin-top: 40px; padding-top: 22px; border-top: 1px solid #e0ddd6; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 15px; color: #555; }
-.ft__legal { display: flex; gap: 20px; flex-wrap: wrap; }
+.ft__bottom { margin-top: 44px; padding-top: 24px; border-top: 1px solid #e0ddd6; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 15px; color: #555; }
+.ft__legal { display: flex; gap: 22px; flex-wrap: wrap; }
 .ft__legal a { color: #555; text-decoration: none; }
 .ft__legal a:hover { color: var(--accent); }
-@media (max-width: 760px) { .ft__cols { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 480px) { .ft__cols { grid-template-columns: 1fr; } }
+@media (max-width: 1080px) {
+  .ft__cols { flex-wrap: wrap; gap: 34px 40px; }
+  .ft__col { flex: 0 0 auto; min-width: 160px; }
+  .ft ul a { white-space: normal; }
+}
+@media (max-width: 560px) { .ft__cols { gap: 30px; } .ft__col { flex: 1 1 45%; } }
 
 /* breadcrumb */
 .crumb { padding: 16px 0 0; font-size: 13px; color: var(--muted); font-weight: 600; display: flex; gap: 8px; flex-wrap: wrap; }
