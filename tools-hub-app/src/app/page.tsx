@@ -2,6 +2,7 @@ import Link from 'next/link'
 import {repo} from '@/lib/repository'
 import {featuredTools, rankTools} from '@/lib/core/taxonomy'
 import EveryoneUses from '@/components/EveryoneUses'
+import HeroSearch from '@/components/HeroSearch'
 import UltimateDirectory, {type UltimateDirectoryGroup} from '@/components/UltimateDirectory'
 
 export default async function CollectionPage() {
@@ -39,14 +40,14 @@ export default async function CollectionPage() {
             auditing crawlability, this directory helps SaaS and enterprise teams compare software by editorial
             fit, pricing, capabilities, and the strength of its recorded evidence.
           </p>
-          <form className="chero__search" action="/search">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="7" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input name="q" type="text" placeholder="Search for a tool…" />
-            <span className="kbd">Ctrl K</span>
-          </form>
+          <HeroSearch
+            tools={tools.map((t) => ({
+              name: t.name,
+              slug: t.slug,
+              category: t.primaryCategory.name,
+              domain: t.domain,
+            }))}
+          />
         </div>
       </section>
 

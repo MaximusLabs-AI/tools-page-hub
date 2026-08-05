@@ -1,5 +1,5 @@
 'use client'
-import {useState} from 'react'
+import {useRef, useState} from 'react'
 import Link from 'next/link'
 import {useRouter} from 'next/navigation'
 import type {Tool} from '@/lib/types'
@@ -11,6 +11,17 @@ type Group = {code: string; name: string; tools: Tool[]}
 export default function EveryoneUses({featured, groups}: {featured: Tool[]; groups: Group[]}) {
   const router = useRouter()
   const [active, setActive] = useState('featured')
+  const resultsRef = useRef<HTMLElement>(null)
+
+  const selectCategory = (code: string) => {
+    setActive(code)
+    // if the reader has scrolled past the results, bring them back so the new
+    // list starts at the top instead of appearing "above" the current view
+    const el = resultsRef.current
+    if (el && el.getBoundingClientRect().top < 108) {
+      el.scrollIntoView({behavior: 'smooth', block: 'start'})
+    }
+  }
   const shown = active === 'featured' ? featured : (groups.find((g) => g.code === active)?.tools ?? [])
   const items = [{code: 'featured', name: 'Best AI-era tools'}, ...groups.slice(0, 9).map((g) => ({code: g.code, name: g.name}))]
   const activeName = items.find((item) => item.code === active)?.name ?? 'Best AI-era tools'
@@ -26,7 +37,7 @@ export default function EveryoneUses({featured, groups}: {featured: Tool[]; grou
             <button
               key={s.code}
               className={`eu__cat${active === s.code ? ' on' : ''}`}
-              onClick={() => setActive(s.code)}
+              onClick={() => selectCategory(s.code)}
               aria-pressed={active === s.code}
             >
               <span>{s.name}</span>
@@ -37,7 +48,7 @@ export default function EveryoneUses({featured, groups}: {featured: Tool[]; grou
         <Link href="#directory" className="eu__more">Browse every category ›</Link>
       </aside>
 
-      <section className="eu__results" aria-label={`${activeName} tools`}>
+      <section className="eu__results" ref={resultsRef} aria-label={`${activeName} tools`}>
         <div className="eu__results-head">
           <div>
             <span>Selected collection</span>

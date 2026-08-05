@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import {useMemo, useState} from 'react'
 import type {Tool} from '@/lib/types'
 import {searchTools} from '@/lib/core/search'
@@ -23,7 +24,14 @@ export default function SearchClient({tools, initialQ}: {tools: Tool[]; initialQ
   return (
     <section className="blk paper">
       <div className="wrap">
-        <div className="hr-accent" />
+        <nav className="tpcrumb" aria-label="Breadcrumb" style={{display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', paddingTop: 0}}>
+          <Link href="/">Home</Link>
+          <span>›</span>
+          <Link href="/#directory">Tools</Link>
+          <span>›</span>
+          <b>{q.trim() ? `Search: “${q.trim()}”` : 'Search results'}</b>
+        </nav>
+        <div className="hr-accent" style={{marginTop: 14}} />
         <h1 className="sec">Search &amp; filter tools</h1>
         <div className="searchbar" style={{maxWidth: '100%', marginTop: 16}}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
