@@ -3,7 +3,8 @@ import {defineType, defineField} from 'sanity'
 /**
  * Tool — the core document. Renders the frozen Phase 4B 14-section tool profile
  * PLUS the net-new AI Answer Confidence module.
- * URL: /tools/<slug>  (Next.js dynamic route, ISR).
+ * URL: /resources/ai-tool-directory/tools/<slug> on maximuslabs.ai (Next.js
+ * dynamic route under the app's basePath, ISR).
  * Enum values are the frozen Phase 4A controlled vocabulary — do not rename.
  */
 export default defineType({
@@ -22,7 +23,15 @@ export default defineType({
   fields: [
     /* ---- Identity ---- */
     defineField({name: 'name', title: 'Name', type: 'string', group: 'identity', validation: (r) => r.required()}),
-    defineField({name: 'slug', title: 'Slug', type: 'slug', group: 'identity', options: {source: 'name', maxLength: 60}, validation: (r) => r.required()}),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      group: 'identity',
+      options: {source: 'name', maxLength: 60},
+      description: 'Becomes /resources/ai-tool-directory/tools/<slug>.',
+      validation: (r) => r.required(),
+    }),
     defineField({name: 'officialUrl', title: 'Official URL', type: 'url', group: 'identity', validation: (r) => r.required()}),
     defineField({name: 'vendor', title: 'Vendor', type: 'reference', to: [{type: 'vendor'}], group: 'identity'}),
     defineField({name: 'logo', title: 'Logo', type: 'image', group: 'identity', options: {hotspot: false}}),
