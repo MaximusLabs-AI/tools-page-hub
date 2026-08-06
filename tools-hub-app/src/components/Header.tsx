@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {LogoMark} from './Logo'
 
 // The hub is served under maximuslabs.ai (via URL rewrite), so this header is an
@@ -102,52 +102,118 @@ const NAV: NavItem[] = [
   },
 ]
 
-function Caret() {
+function Caret({up}: {up?: boolean}) {
   return (
-    <svg className="nav__caret" viewBox="0 0 10 6" aria-hidden="true">
+    <svg className={`nav__caret${up ? ' is-up' : ''}`} viewBox="0 0 10 6" aria-hidden="true">
       <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
 
+// The live site (Webflow's data-hover="true" dropdowns) opens/closes each
+// menu via JS with a short close delay — not pure CSS :hover. That matters:
+// pure :hover with position:absolute panels lets a wide panel's hoverable
+// area geometrically extend over a neighboring nav item, so hovering "into"
+// the next item can keep the wrong panel open or show two at once. Tracking
+// a single open item in state (with a brief close delay so crossing the
+// button-to-panel gap doesn't flicker-close) guarantees only one panel is
+// ever open, matching the live behavior exactly.
+const CLOSE_DELAY_MS = 120
+
 export default function Header() {
-  const [open, setOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [openLabel, setOpenLabel] = useState<string | null>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const rootRef = useRef<HTMLElement>(null)
+
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current)
+      closeTimer.current = null
+    }
+  }
+  const openItem = (label: string) => {
+    clearCloseTimer()
+    setOpenLabel(label)
+  }
+  const closeSoon = () => {
+    clearCloseTimer()
+    closeTimer.current = setTimeout(() => setOpenLabel(null), CLOSE_DELAY_MS)
+  }
+  const closeNow = () => {
+    clearCloseTimer()
+    setOpenLabel(null)
+  }
+
+  // Close on outside click and on Escape, and clean up the pending timer on unmount.
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) closeNow()
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeNow()
+    }
+    document.addEventListener('mousedown', onDocClick)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onDocClick)
+      document.removeEventListener('keydown', onKeyDown)
+      clearCloseTimer()
+    }
+  }, [])
 
   return (
-    <header className="hdr">
+    <header className="hdr" ref={rootRef}>
       <div className="wrap hdr__in">
         <a className="brand" href={SITE} aria-label="MaximusLabs">
           <LogoMark />
         </a>
 
         <nav className="nav" aria-label="Primary">
-          {NAV.map((item) => (
-            <div className="nav__item" key={item.label}>
-              <button className="nav__btn" type="button">
-                {item.label}
-                <Caret />
-              </button>
-              <div className={`nav__panel${item.columns.length > 1 ? ' nav__panel--multi' : ''}`}>
-                {item.columns.map((column, ci) => (
-                  <div className="nav__col" key={ci}>
-                    {column.map((section, si) => (
-                      <div className="nav__grp" key={section.heading || si}>
-                        {section.heading && (
-                          <>
-                            <h4>{section.heading}</h4>
-                            <div className="nav__rule" aria-hidden="true" />
-                          </>
-                        )}
-                        {section.links.map(([label, href]) => (
-                          <a key={href} href={abs(href)}>{label}</a>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                ))}
+          {NAV.map((item) => {
+            const isOpen = openLabel === item.label
+            return (
+              <div
+                className="nav__item"
+                key={item.label}
+                onMouseEnter={() => openItem(item.label)}
+                onMouseLeave={closeSoon}
+              >
+                <button
+                  className="nav__btn"
+                  type="button"
+                  aria-expanded={isOpen}
+                  onClick={() => (isOpen ? closeNow() : openItem(item.label))}
+                >
+                  {item.label}
+                  <Caret up={isOpen} />
+                </button>
+                <div
+                  className={`nav__panel${item.columns.length > 1 ? ' nav__panel--multi' : ''}${isOpen ? ' is-open' : ''}`}
+                  onMouseEnter={() => openItem(item.label)}
+                  onMouseLeave={closeSoon}
+                >
+                  {item.columns.map((column, ci) => (
+                    <div className="nav__col" key={ci}>
+                      {column.map((section, si) => (
+                        <div className="nav__grp" key={section.heading || si}>
+                          {section.heading && (
+                            <>
+                              <h4>{section.heading}</h4>
+                              <div className="nav__rule" aria-hidden="true" />
+                            </>
+                          )}
+                          {section.links.map(([label, href]) => (
+                            <a key={href} href={abs(href)} onClick={closeNow}>{label}</a>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </nav>
 
         <div className="hdr__cta">
@@ -156,11 +222,11 @@ export default function Header() {
         </div>
 
         <button
-          className={`hdr__burger${open ? ' is-open' : ''}`}
+          className={`hdr__burger${mobileOpen ? ' is-open' : ''}`}
           type="button"
           aria-label="Toggle menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
         >
           <span />
           <span />
@@ -168,7 +234,7 @@ export default function Header() {
         </button>
       </div>
 
-      {open && (
+      {mobileOpen && (
         <div className="hdr__mobile">
           {NAV.map((item) => (
             <div className="hdr__mgroup" key={item.label}>
