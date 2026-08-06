@@ -88,8 +88,8 @@ Two page types, two different tools, connected by one design language. This mirr
 There will be 70+ tool pages, each data-rich (AI-confidence per engine, comparison rows, features with verification tags, pricing tiers) and re-verified monthly. That is a headless-CMS job, not a hand-built-in-Webflow job. Reuse the proven hub stack:
 
 ```
-maximuslabs.ai/tools/[slug]  ->  Cloudflare Worker (reverse proxy)
-                                     -> tools.maximuslabs.ai (Vercel, Next.js, noindex origin)
+maximuslabs.ai/resources/ai-tool-directory  ->  Cloudflare Worker (reverse proxy)
+                                     -> Vercel, Next.js, noindex origin (hostname set via Worker env var, own setup)
                                         -> Sanity Content Lake (the CMS)
 ```
 - One Next.js dynamic route `app/tools/[slug]/page.tsx` renders every tool from one template (port `tool-landing-page-template.html` into React components sharing the brand CSS).
@@ -119,7 +119,7 @@ aiConfidence: { jobContext, aggregatePct, methodologyNote, lastCheckedAt,
 ### 8d. Sequencing
 1. **Now** (done): two HTML blueprints, on-brand, real logos, real footer, the AI Confidence module. `tools-page-design-template.html` (hub) + `tool-landing-page-template.html` (Peec AI profile).
 2. **Hub in Webflow**: build Categories + Tools collections, rebuild the hub design, wire cards to link to `/tools/[slug]`.
-3. **Landing pages in Sanity + Next.js**: stand up the `tool` schema + Studio, port the landing template to the catch-all route under the Cloudflare proxy (prereqs: Sanity project, Vercel, `tools.maximuslabs.ai` DNS).
+3. **Landing pages in Sanity + Next.js**: stand up the `tool` schema + Studio, port the landing template to the catch-all route under the Cloudflare proxy (prereqs: Sanity project, Vercel, and a Cloudflare Worker + origin set up per your own process — see `About-the-Project.md`).
 4. **Real logos**: upload high-res tool + AI-platform logos to the CMS (favicons in the templates are placeholders that resolve live).
 5. **Live AI data**: replace the illustrative confidence numbers with a real prompt-panel run (Peec/Profound-style, or Maximus's own), on the monthly cadence from Phase 3, Deliverable 8.
 

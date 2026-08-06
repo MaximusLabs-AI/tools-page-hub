@@ -9,8 +9,12 @@
 # `wrangler login`) and the Worker goes live with these exact settings —
 # no manual copy-pasting into the dashboard.
 #
-# Fill in the one placeholder below before deploying:
-#   - account_id  -> Cloudflare dashboard, right sidebar of any zone overview
+# Fill in the two placeholders below before deploying:
+#   - account_id -> Cloudflare dashboard, right sidebar of any zone overview
+#   - ORIGIN     -> wherever your Vercel deployment actually lives (host only,
+#                   no scheme). This is intentionally NOT hardcoded in the
+#                   worker script — set it up however you already do it for
+#                   the other MaximusLabs Cloudflare-fronted apps.
 # =====================================================
 
 name = "maximus-tools-proxy"
@@ -18,6 +22,9 @@ main = "cloudflare-worker-tools.js"
 compatibility_date = "2024-09-23"
 
 account_id = "REPLACE_WITH_YOUR_CLOUDFLARE_ACCOUNT_ID"
+
+[vars]
+ORIGIN = "REPLACE_WITH_YOUR_ORIGIN_HOST"
 
 # ----- Routes: which URLs on the zone invoke this Worker -----
 # The app is mounted under ONE path via Next.js basePath, which scopes BOTH

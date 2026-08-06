@@ -2,8 +2,8 @@
 // MAXIMUS LABS - Tools directory reverse proxy (v3)
 // =====================================================
 // Serves the Vercel-hosted tools-hub-app under
-// www.maximuslabs.ai/resources/ai-tool-directory/* while keeping the
-// origin noindex.
+// www.maximuslabs.ai/resources/ai-tool-directory/* (a subdirectory of the
+// main domain, not a subdomain) while keeping the origin noindex.
 //
 // The app is mounted at that exact path via Next.js `basePath`
 // (see tools-hub-app/next.config.mjs). basePath scopes BOTH page routes
@@ -18,6 +18,10 @@
 // Worker route to register on the maximuslabs.ai zone:
 //   www.maximuslabs.ai/resources/ai-tool-directory*
 //
+// ORIGIN is set via a Worker environment variable, not hardcoded here —
+// set it to wherever your Vercel deployment actually lives, the same way
+// you already do for the other MaximusLabs Cloudflare-fronted apps.
+//
 // Routing rule, in order:
 //   1. path under APP_PREFIX -> proxy to the Next origin, unchanged
 //   2. everything else        -> Webflow
@@ -31,24 +35,26 @@
 // Both were removed when the app moved to its own basePath-scoped mount.)
 // =====================================================
 
-const ORIGIN = 'tools.maximuslabs.ai' // Vercel deployment host for tools-hub-app
-
 // The one path prefix this worker forwards to the Next app. Keep this
 // scoped — broadening to a bare "/resources" would hijack other Webflow
 // pages under that same top-level segment.
 const APP_PREFIX = '/resources/ai-tool-directory'
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url)
     const path = url.pathname
 
     const shouldProxy = path === APP_PREFIX || path.startsWith(APP_PREFIX + '/')
     if (!shouldProxy) return fetch(request) // everything else -> Webflow
 
+    if (!env || !env.ORIGIN) {
+      return new Response('Worker misconfigured: ORIGIN env var is not set.', {status: 500})
+    }
+
     // No path rewriting needed: the origin's own basePath expects to
     // receive this exact path, assets included.
-    const res = await fetch(`https://${ORIGIN}${path}${url.search}`, {
+    const res = await fetch(`https://${env.ORIGIN}${path}${url.search}`, {
       method: request.method,
       headers: request.headers,
       body: ['GET', 'HEAD'].includes(request.method) ? undefined : request.body,

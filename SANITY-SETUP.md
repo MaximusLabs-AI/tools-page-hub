@@ -7,7 +7,7 @@ to run (they need accounts/tokens the app never stores).
 ## Prerequisites you provide
 1. A **Sanity** project — `projectId` + dataset name (e.g. `production`) + a **write token** (kept by you).
 2. A **Vercel** project + a connected Git repo.
-3. **DNS** control for `tools.maximuslabs.ai` on Cloudflare.
+3. **Cloudflare** access to deploy the Worker (`cloudflare-worker-tools.js`) and route it under `www.maximuslabs.ai/resources/ai-tool-directory/*` — the origin hostname it proxies to is set via a Worker env var, per your own setup process (see `About-the-Project.md` and `Worker-Setup-Checklist.md`).
 
 ## Step 1 — Stand up the Sanity Studio
 Reuse your existing Studio or create one, then add the schema:

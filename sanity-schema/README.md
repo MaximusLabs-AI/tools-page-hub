@@ -43,4 +43,4 @@ export default defineConfig({ /* ... */ schema: { types: schemaTypes } })
 4. Cloudflare reverse-proxy under `maximuslabs.ai/tools/*` (same pattern as AI Search 101).
 
 ## Prerequisites (yours to provide)
-Sanity project id + dataset + write token; Vercel project + repo; `tools.maximuslabs.ai` DNS on Cloudflare.
+Sanity project id + dataset + write token; Vercel project + repo; a Cloudflare Worker + origin set up per your own process (see `About-the-Project.md` and `Worker-Setup-Checklist.md` at the repo root).
