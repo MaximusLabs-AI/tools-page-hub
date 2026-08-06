@@ -132,7 +132,12 @@ export default function Header() {
                   <div className="nav__col" key={ci}>
                     {column.map((section, si) => (
                       <div className="nav__grp" key={section.heading || si}>
-                        {section.heading && <h4>{section.heading}</h4>}
+                        {section.heading && (
+                          <>
+                            <h4>{section.heading}</h4>
+                            <div className="nav__rule" aria-hidden="true" />
+                          </>
+                        )}
                         {section.links.map(([label, href]) => (
                           <a key={href} href={abs(href)}>{label}</a>
                         ))}

@@ -69,7 +69,8 @@ img { max-width: 100%; }
 .nav__item:hover .nav__panel, .nav__item:focus-within .nav__panel { display: grid; }
 /* one nav__col per menu column; it can stack more than one headed nav__grp section */
 .nav__col { min-width: 208px; display: flex; flex-direction: column; gap: 14px; }
-.nav__grp h4 { margin: 2px 0 6px; padding: 0 10px; font-size: 16px; font-weight: 700; letter-spacing: normal; text-transform: none; color: var(--text); }
+.nav__grp h4 { margin: 2px 0 0; padding: 0 10px; font-size: 16px; font-weight: 700; letter-spacing: normal; text-transform: none; color: var(--text); }
+.nav__rule { height: 0; margin: 8px 10px 6px; border-bottom: 0.8px solid rgba(0, 0, 0, .1); }
 .nav__grp a { display: block; padding: 9px 10px; border-radius: 8px; font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; white-space: nowrap; }
 .nav__grp a:hover { background: var(--marble); color: var(--accent); }
 
