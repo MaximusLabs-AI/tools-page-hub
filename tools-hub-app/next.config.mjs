@@ -6,30 +6,20 @@ const nextConfig = {
   reactStrictMode: true,
   // This app is mounted under www.maximuslabs.ai/resources/ai-tool-directory
   // (see cloudflare-worker-tools.js). basePath makes every Link, useRouter()
-  // navigation and redirect() in the app auto-prefix with this path, so no
-  // component code needs to reference it directly. Only takes effect in
-  // production builds; dev still serves the app at "/" for convenience.
+  // navigation, redirect(), AND static asset URL (/_next/*) in the app
+  // auto-prefix with this path, so no component code needs to reference it
+  // directly. Only takes effect in production builds; dev still serves the
+  // app at "/" for convenience.
+  //
+  // No separate assetPrefix is needed: the app used to live at the shared
+  // root with a bare /_next/*, which collided with another Next app on the
+  // same domain (ai-search-101-hub), so assets were moved to a custom
+  // /tools-static/_next/* prefix with a rewrite back to /_next/*. Now that
+  // this app has its own unique basePath, Next automatically serves assets
+  // at {basePath}/_next/* by default — already a unique, non-colliding path
+  // — so that whole extra layer (and its Vercel-platform-specific rewrite
+  // quirks around static-asset destinations) is no longer needed.
   basePath: isProd ? BASE_PATH : undefined,
-  // The ai-search-101 Next app already claims /_next/* on www.maximuslabs.ai
-  // (see ai-search-101-hub/cloudflare-worker-v9.js). Two Next apps behind one
-  // domain cannot share that path, so this app's assets move under
-  // /tools-static/_next/*, which cloudflare-worker-tools.js proxies and strips.
-  // Independent of basePath above (assetPrefix governs /_next/* URLs only).
-  // Only takes effect in production builds; dev still serves /_next directly.
-  assetPrefix: isProd ? '/tools-static' : undefined,
-  // assetPrefix points asset URLs at /tools-static/_next/*. The Cloudflare worker
-  // strips that prefix on the shared domain, but the Vercel origin itself must also
-  // serve those URLs (direct preview, and any proxy that forwards the prefix). On
-  // Vercel's platform (unlike local `next start`), static assets are served UNDER
-  // the basePath once basePath is set, i.e. at {basePath}/_next/*, not bare /_next/*
-  // — so the rewrite destination must include it. beforeFiles runs before static
-  // resolution, so the real asset is found. Without this the whole app loads with
-  // no CSS/JS.
-  async rewrites() {
-    return {
-      beforeFiles: [{source: '/tools-static/_next/:path*', destination: `${isProd ? BASE_PATH : ''}/_next/:path*`}],
-    }
-  },
   images: {
     // tool + AI-platform favicons load from Google's favicon service in local/dev.
     // Swapped for Sanity CDN assets once logos are uploaded.

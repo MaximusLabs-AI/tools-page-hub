@@ -56,7 +56,7 @@ Tools Page/                         (git root — repo: MaximusLabs-AI/tools-pag
 │  │  │  ├─ repository/              ← data layer (local + sanity) — see §4
 │  │  │  └─ core/                    ← search, filters, comparison, toolFinder, stackBuilder
 │  │  └─ data/seed.json              ← generated local catalog (fallback / dev)
-│  ├─ next.config.mjs                ← assetPrefix + rewrites (see §7)
+│  ├─ next.config.mjs                ← basePath (see §7)
 │  ├─ vercel.json                    ← { framework: nextjs }
 │  ├─ .env.production                ← PUBLIC Sanity config (committed)
 │  └─ .env.local                     ← secrets (gitignored)
@@ -99,11 +99,10 @@ All routes are **statically generated** (`generateStaticParams`). When proxied, 
 | `/resources/ai-tool-directory/corrections` | `app/corrections/page.tsx` | corrections policy |
 | `/resources/ai-tool-directory/disclosures` | `app/disclosures/page.tsx` | disclosures |
 | `/api/revalidate` | `app/api/revalidate/route.ts` | POST webhook to refresh ISR (called directly on the Vercel domain, not proxied) |
-| **`/tools-static/_next/*`** | (static assets) | **CSS / JS / images** — see §6 & §7 (unrelated to the basePath — this is a separate `assetPrefix`) |
+| `/resources/ai-tool-directory/_next/*` | (static assets) | **CSS / JS / images** — `basePath` scopes these under the same prefix as the pages, so there's nothing extra to configure (see §7) |
 
-> **The set of top-level path prefixes owned by this app** (everything the proxy must forward) is now just **two**:
-> `/resources/ai-tool-directory` and `/tools-static`.
-> This same pair lives in the worker as `APP_PREFIXES`.
+> **The set of top-level path prefixes owned by this app** (everything the proxy must forward) is now just **one**: `/resources/ai-tool-directory`.
+> This same value lives in the worker as `APP_PREFIX`.
 
 ### No more reserved-slug collision
 Earlier revisions of this app lived directly at `/tools/*`, which collided with four **free tools** Webflow already serves at that same path (`ai-content-humanizer`, `ai-content-optimizer`, `ai-crawlability-checker`, `llms-txt-generator`) — requiring a "reserved slugs" guard in both the worker and the Sanity schema to keep them from fighting over the same URL.
@@ -144,29 +143,16 @@ Earlier revisions of this app lived directly at `/tools/*`, which collided with 
 - **Public production URL:** `https://tools-page-hub.vercel.app/resources/ai-tool-directory` (note the `basePath` below means even the direct Vercel URL requires this prefix in production — there's no unprefixed `/` route anymore). Intended **origin host for the proxy: `tools.maximuslabs.ai`** (a Vercel custom domain / DNS record that points at this deployment — see §8).
 - **Env vars:** public Sanity config is committed in `.env.production` (`DATA_SOURCE=sanity`, `NEXT_PUBLIC_SANITY_PROJECT_ID=asrqfhiu`, dataset `production`, API `2024-08-01`). Optional runtime secret **`SANITY_REVALIDATE_SECRET`** (Vercel env) powers the `/api/revalidate` webhook for instant content updates.
 
-### basePath — how the app is mounted at `/resources/ai-tool-directory`
+### basePath — how the app is mounted at `/resources/ai-tool-directory`, pages AND assets
 `next.config.mjs`, production only:
 ```js
 basePath: '/resources/ai-tool-directory'
 ```
-This is the whole mechanism behind §5 — Next.js's own router prefixes every internal link, redirect, and client navigation with this path automatically. Verified in the production build: every internal `href` in the rendered HTML carries the prefix, with zero leftover unprefixed links.
+This is the whole mechanism behind §5. Next.js's own router prefixes every internal link, redirect, and client navigation with this path automatically — **and** it scopes static asset URLs (`/_next/*`) under the same prefix by default, so they come out as `/resources/ai-tool-directory/_next/…` with zero extra config.
 
-### assetPrefix — why `/tools-static/` exists (a separate, independent mechanism)
-Two Next.js apps share `maximuslabs.ai`, and both would want `/_next/*`. To avoid the collision, this app sets (in `next.config.mjs`, **production only**):
+An earlier revision of this app used a separate `assetPrefix: '/tools-static'` plus a custom rewrite, because back then the app lived at the shared root (no basePath) and needed its own unique asset path to avoid colliding with another Next.js app on the same domain (`ai-search-101-hub`, which also wants `/_next/*`). That mechanism is **gone** — now that this app has its own unique `basePath`, its assets are automatically isolated under `/resources/ai-tool-directory/_next/*`, which the other app's namespace can't touch either. One thing worth knowing if this ever needs revisiting: **Vercel's actual deployed platform serves `/_next/*` under the basePath once basePath is set, but local `next start` does not enforce that the same way** — this was confirmed by testing directly against both. A custom rewrite that assumed the local behavior would 404 in production; removing the rewrite entirely (and just letting `basePath` own both pages and assets) sidesteps that platform difference completely.
 
-```js
-assetPrefix: '/tools-static'
-```
-
-So the HTML references its assets at **`/tools-static/_next/…`** instead of `/_next/…`. Because the Vercel origin still *serves* those files at `/_next/…`, `next.config.mjs` also adds a **rewrite** so the origin resolves the prefixed URLs directly:
-
-```js
-async rewrites() {
-  return { beforeFiles: [{ source: '/tools-static/_next/:path*', destination: '/_next/:path*' }] }
-}
-```
-
-**Consequence for the proxy:** anything under **`/tools-static/*`** must also be forwarded to the origin, or the site loads with **no CSS/JS**.
+**Consequence for the proxy:** because assets now live under the exact same prefix as the pages, there is nothing extra to forward — the single `/resources/ai-tool-directory*` route covers everything.
 
 ---
 
@@ -176,31 +162,29 @@ The reverse proxy is already written: **`cloudflare-worker-tools.js`** (repo roo
 
 **Config in the worker:**
 - `ORIGIN = 'tools.maximuslabs.ai'` — the Vercel deployment host.
-- `APP_PREFIXES` — now just two entries: `/resources/ai-tool-directory` and `/tools-static` (see §5).
+- `APP_PREFIX = '/resources/ai-tool-directory'` — the one path this worker owns (see §5).
 
 **Routing logic, in order (per request):**
-1. If path equals or starts with an `APP_PREFIXES` entry → **proxy to the Vercel origin**:
-   - Strip the `/tools-static` prefix so the origin gets `/_next/…` (`originPath`). The `/resources/ai-tool-directory` prefix on page routes is **not** stripped — the origin's own `basePath` (§7) expects to receive it as-is.
-   - `fetch('https://' + ORIGIN + originPath + search)` with the original method/headers/body, `redirect: 'manual'`.
+1. If path equals or starts with `APP_PREFIX` → **proxy to the Vercel origin, unchanged**:
+   - `fetch('https://' + ORIGIN + path + search)` with the original method/headers/body, `redirect: 'manual'`. No path rewriting — the origin's own `basePath` (§7) expects to receive the path exactly as the browser sent it, assets included.
    - On the way back: delete `x-robots-tag` (origin is noindex; the public URL stays indexable) and add `x-served-by`.
 2. Everything else → **Webflow** (the main marketing site, including other `/resources/*` pages).
 
-There is no reserved-slug fallthrough step anymore — see §5 for why that guard was removed.
+There is no reserved-slug fallthrough step and no separate asset-path handling anymore — see §5 and §7 for why both were removed.
 
 ### Step-by-step plan to attach it in Webflow + Cloudflare
 
 1. **Point the origin subdomain at Vercel.** Add `tools.maximuslabs.ai` as a **custom domain on the Vercel project** and create the DNS record Vercel gives you. This subdomain must reach Vercel **directly** (in Cloudflare, set that record **DNS-only / grey cloud**) so the Worker's `fetch()` doesn't loop back through itself.
 2. **Keep the app's own domain noindex** (already handled: the origin sends `x-robots-tag: noindex`, which the Worker strips only for the public `maximuslabs.ai` path — so only the canonical URL is indexable).
-3. **Create the Worker** in the Cloudflare dashboard (or `wrangler`), pasting `cloudflare-worker-tools.js`. Confirm `ORIGIN` and `APP_PREFIXES` are correct.
-4. **Add Worker Routes** on the `maximuslabs.ai` zone (Workers → Routes) — just two:
+3. **Create the Worker** in the Cloudflare dashboard (or `wrangler`), pasting `cloudflare-worker-tools.js`. Confirm `ORIGIN` and `APP_PREFIX` are correct.
+4. **Add a Worker Route** on the `maximuslabs.ai` zone (Workers → Routes) — just one:
    - `www.maximuslabs.ai/resources/ai-tool-directory*`
-   - `www.maximuslabs.ai/tools-static/*`
    - **Never** a bare `www.maximuslabs.ai/resources*` — that would swallow `/resources/reports` and any other existing Webflow content under `/resources/`.
 5. **Webflow side:** nothing to build — Webflow keeps serving `/`, `/resources/reports`, `/tools/<free-tool>`, and everything else, untouched.
 6. **Link into it from Webflow:** point the "AI Tool Directory" item in the Resources → Tools nav dropdown at `https://www.maximuslabs.ai/resources/ai-tool-directory` (the collection page). The "Free AI Tools" links in that same dropdown stay pointed at their existing `/tools/<slug>` Webflow pages, unaffected.
-7. **Test after cutover:** load `maximuslabs.ai/resources/ai-tool-directory` (collection), a tool review page under it (confirm CSS loads via `/tools-static/_next/…`), `/resources/reports` (must be unchanged Webflow content), and a `/tools/<free-tool>` page (must still be Webflow, unaffected since this app no longer touches `/tools/*` at all).
+7. **Test after cutover:** load `maximuslabs.ai/resources/ai-tool-directory` (collection — confirm it's styled, since assets ride the same route), a tool review page under it, `/resources/reports` (must be unchanged Webflow content), and a `/tools/<free-tool>` page (must still be Webflow, unaffected since this app no longer touches `/tools/*` at all).
 
-> **Failure mode to watch:** if pages render **unstyled** through the proxy, it's the `/tools-static/*` route missing or not being forwarded — that path carries all CSS/JS.
+> **Failure mode to watch:** if pages render **unstyled** through the proxy, the `/resources/ai-tool-directory*` route isn't attached at all — since assets ride the same single route as the pages, there's no separate asset route to check.
 > **Second failure mode to watch:** if `/resources/reports` (or other existing `/resources/*` Webflow pages) start showing the tools app, a route was added as a bare `/resources*` pattern instead of the full `/resources/ai-tool-directory*`.
 
 Full step-by-step with checkboxes: **[DNS-and-Worker-Checklist.md](DNS-and-Worker-Checklist.md)**.
@@ -224,8 +208,8 @@ Full step-by-step with checkboxes: **[DNS-and-Worker-Checklist.md](DNS-and-Worke
 | Repo / branch | `MaximusLabs-AI/tools-page-hub` / `main` |
 | Vercel URL | `tools-page-hub.vercel.app/resources/ai-tool-directory` |
 | Proxy origin | `tools.maximuslabs.ai` |
-| Public mount | `www.maximuslabs.ai/resources/ai-tool-directory` (via `basePath`) |
-| Asset path | `/tools-static/_next/*` (`assetPrefix`, independent of the mount point above) |
+| Public mount | `www.maximuslabs.ai/resources/ai-tool-directory` (via `basePath` — covers pages AND assets) |
+| Asset path | `/resources/ai-tool-directory/_next/*` (same prefix as pages, no separate `assetPrefix`) |
 | Webflow `/tools/*` | Untouched — this app no longer lives there; no reserved-slug guard needed |
 | Watch-item | `/resources/*` also serves other Webflow pages (e.g. `/resources/reports`) — always match the full `/resources/ai-tool-directory` prefix, never bare `/resources*` |
 | Sanity | project `asrqfhiu`, dataset `production` |

@@ -61,17 +61,18 @@ If you deployed via `wrangler deploy` with the `routes` block in `wrangler.toml`
 If you deployed via the dashboard (Option B), add routes manually:
 
 1. Cloudflare dashboard → your zone (`maximuslabs.ai`) → **Workers Routes** (or Workers & Pages → the worker → Triggers → Routes).
-2. Add these two routes, both pointing to `maximus-tools-proxy`:
+2. Add this one route, pointing to `maximus-tools-proxy`:
 
    | Route pattern |
    |---|
    | `www.maximuslabs.ai/resources/ai-tool-directory*` |
-   | `www.maximuslabs.ai/tools-static/*` |
+
+   This single route covers both pages and static assets — `basePath` scopes both under the same prefix (see §7/§8 of `About-the-Project.md`), so there's no separate asset route to add.
 
    **Do not** add a bare `www.maximuslabs.ai/resources*` route — Webflow already serves other pages under `/resources/` (e.g. `/resources/reports` for Industry Reports), and a bare prefix would hijack those.
 
-- [ ] Both routes are attached to the Worker
-- [ ] No route uses a bare `/resources*` pattern
+- [ ] The route is attached to the Worker
+- [ ] The route is NOT a bare `/resources*` pattern
 
 ---
 
@@ -92,7 +93,7 @@ Load each of these on the **real domain** (not the `.vercel.app` one) and confir
 
 | URL | Expect |
 |---|---|
-| `https://www.maximuslabs.ai/resources/ai-tool-directory` | Tools collection page, **fully styled** (this is the real test that `/tools-static/*` is routed correctly — if it loads unstyled, that route is missing) |
+| `https://www.maximuslabs.ai/resources/ai-tool-directory` | Tools collection page, **fully styled** — CSS/JS live under the same `/resources/ai-tool-directory/_next/*` prefix as the page, so if the route is attached at all, styling comes with it |
 | `https://www.maximuslabs.ai/resources/ai-tool-directory/tools/<any tool slug>` | Tool review page, styled, header/footer match the main site |
 | `https://www.maximuslabs.ai/resources/ai-tool-directory/stacks` | Stack Builder page from the app |
 | `https://www.maximuslabs.ai/resources/ai-tool-directory/methodology` | Static policy page from the app |
@@ -135,8 +136,9 @@ npx sanity deploy
 
 | Symptom | Likely cause |
 |---|---|
-| Page loads with no CSS/styling | `/tools-static/*` route missing or not attached to the Worker |
+| Page loads with no CSS/styling | The `/resources/ai-tool-directory*` route isn't attached to the Worker at all (this one route covers assets too) |
 | `/resources/reports` (or other existing Webflow `/resources/*` pages) now show the Next app | A route was added as bare `/resources*` instead of `/resources/ai-tool-directory*` — fix the route pattern |
 | 522/523 error on any proxied path | `tools.maximuslabs.ai` DNS record misconfigured, or Vercel domain not verified yet (Step 1) |
 | Changes to the worker script don't show up | Forgot to `wrangler deploy` (or re-save in the dashboard) after editing |
 | Links on the page point to the old `/tools/...` paths | Old cached build — confirm the Vercel deployment includes the `basePath` change in `next.config.mjs` |
+| CSS/JS 404s on Vercel but worked with `npm start` locally | A stale custom `assetPrefix`/rewrite config reappeared — this app should have neither; `basePath` alone must own both pages and `/_next/*` |

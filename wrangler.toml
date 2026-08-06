@@ -20,15 +20,14 @@ compatibility_date = "2024-09-23"
 account_id = "REPLACE_WITH_YOUR_CLOUDFLARE_ACCOUNT_ID"
 
 # ----- Routes: which URLs on the zone invoke this Worker -----
-# The app is mounted under ONE path via Next.js basePath, so this is just
-# two entries: the app's public mount point, and its static-asset prefix
-# (kept in sync with APP_PREFIXES in the worker script).
+# The app is mounted under ONE path via Next.js basePath, which scopes BOTH
+# pages and static assets (/_next/*) under the same prefix — so this is a
+# single route (kept in sync with APP_PREFIX in the worker script).
 #
-# IMPORTANT: the first pattern is scoped to /resources/ai-tool-directory
+# IMPORTANT: this pattern is scoped to /resources/ai-tool-directory
 # specifically, NOT a bare /resources* — Webflow already serves other pages
 # under /resources/ (e.g. /resources/reports for Industry Reports). A bare
 # /resources* pattern would hijack those pages.
 routes = [
   { pattern = "www.maximuslabs.ai/resources/ai-tool-directory*", zone_name = "maximuslabs.ai" },
-  { pattern = "www.maximuslabs.ai/tools-static/*", zone_name = "maximuslabs.ai" },
 ]
