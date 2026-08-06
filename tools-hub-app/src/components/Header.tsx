@@ -9,78 +9,95 @@ import {LogoMark} from './Logo'
 const SITE = 'https://www.maximuslabs.ai'
 const abs = (p: string) => (p.startsWith('http') ? p : SITE + p)
 
-type Group = {heading?: string; links: [string, string][]}
-type NavItem = {label: string; groups: Group[]}
+type Section = {heading?: string; links: [string, string][]}
+// One nav__grp per column. A column can stack more than one headed section
+// (e.g. the live "Resources" menu's second column stacks "Tools" above
+// "Free AI Tools" within a single column, rather than each getting its own).
+type Column = Section[]
+type NavItem = {label: string; columns: Column[]}
 
 const NAV: NavItem[] = [
   {
     label: 'Services',
-    groups: [
-      {
-        heading: 'Expertise',
-        links: [
-          ['Generative Engine Optimisation', '/services/geo'],
-          ['Answer Engine Optimisation', '/services/aeo'],
-          ['Agentic Commerce', '/services/agentic-commerce'],
-          ['B2B SEO', '/services/b2b-seo'],
-        ],
-      },
-      {
-        heading: 'Platforms',
-        links: [
-          ['ChatGPT', '/services/platforms/chatgpt'],
-          ['Gemini', '/services/platforms/google-ai-gemini'],
-          ['Perplexity', '/services/platforms/perplexity'],
-          ['Google AI Mode', '/services/platforms/best-google-ai-optimization-agency---built-for-revenue-not-vanity-metrics-2026'],
-          ['Claude', '/services/platforms/anthropic-claude'],
-        ],
-      },
+    columns: [
+      [
+        {
+          heading: 'Expertise',
+          links: [
+            ['Generative Engine Optimisation', '/services/geo'],
+            ['Answer Engine Optimisation', '/services/aeo'],
+            ['Agentic Commerce', '/services/agentic-commerce'],
+            ['B2B SEO', '/services/b2b-seo'],
+          ],
+        },
+      ],
+      [
+        {
+          heading: 'Platforms',
+          links: [
+            ['ChatGPT', '/services/platforms/chatgpt'],
+            ['Gemini', '/services/platforms/google-ai-gemini'],
+            ['Perplexity', '/services/platforms/perplexity'],
+            ['Google AI Mode', '/services/platforms/best-google-ai-optimization-agency---built-for-revenue-not-vanity-metrics-2026'],
+            ['Claude', '/services/platforms/anthropic-claude'],
+          ],
+        },
+      ],
     ],
   },
   {
     label: 'Resources',
-    groups: [
-      {
-        heading: 'Learn',
-        links: [
-          ['AI Search 101', '/ai-search-101'],
-          ['Blogs', '/blog'],
-          ['Industry Reports', '/resources/reports'],
-        ],
-      },
-      {
-        heading: 'Tools',
-        links: [
-          ['AI Content Humanizer', '/tools/ai-content-humanizer'],
-          ['AI Content Optimizer', '/tools/ai-content-optimizer'],
-          ['AI Crawlability Checker', '/tools/ai-crawlability-checker'],
-          ['LLM Text Generator', '/tools/llms-txt-generator'],
-        ],
-      },
+    columns: [
+      [
+        {
+          heading: 'Learn',
+          links: [
+            ['AI Search 101', '/ai-search-101'],
+            ['Blogs', '/blog'],
+            ['Industry Reports', '/resources/reports'],
+          ],
+        },
+      ],
+      [
+        {heading: 'Tools', links: [['AI Tool Directory', '/resources/ai-tool-directory']]},
+        {
+          heading: 'Free AI Tools',
+          links: [
+            ['AI Content Humanizer', '/resources/free-tools/ai-content-humanizer'],
+            ['AI Content Optimizer', '/resources/free-tools/ai-content-optimizer'],
+            ['AI Crawlability Checker', '/resources/free-tools/ai-crawlability-checker'],
+            ['LLM Text Generator', '/resources/free-tools/llms-txt-generator'],
+          ],
+        },
+      ],
     ],
   },
   {
     label: 'Industries',
-    groups: [
-      {
-        links: [
-          ['AI | SaaS', '/services/industries/ai-saas'],
-          ['Fintech', '/services/industries/financial'],
-          ['Ecommerce', '/services/industries/ecommerce'],
-        ],
-      },
+    columns: [
+      [
+        {
+          links: [
+            ['AI | SaaS', '/services/industries/ai-saas'],
+            ['Fintech', '/services/industries/financial'],
+            ['Ecommerce', '/services/industries/ecommerce'],
+          ],
+        },
+      ],
     ],
   },
   {
     label: 'Company',
-    groups: [
-      {
-        links: [
-          ['About Us', '/company/about-us'],
-          ['Case Studies', '/company/case-studies/case-studies-collection'],
-          ['Career', '/company/careers'],
-        ],
-      },
+    columns: [
+      [
+        {
+          links: [
+            ['About Us', '/company/about-us'],
+            ['Case Studies', '/company/case-studies/case-studies-collection'],
+            ['Career', '/company/careers'],
+          ],
+        },
+      ],
     ],
   },
 ]
@@ -110,12 +127,16 @@ export default function Header() {
                 {item.label}
                 <Caret />
               </button>
-              <div className={`nav__panel${item.groups.length > 1 ? ' nav__panel--multi' : ''}`}>
-                {item.groups.map((group, i) => (
-                  <div className="nav__grp" key={group.heading || i}>
-                    {group.heading && <h4>{group.heading}</h4>}
-                    {group.links.map(([label, href]) => (
-                      <a key={href} href={abs(href)}>{label}</a>
+              <div className={`nav__panel${item.columns.length > 1 ? ' nav__panel--multi' : ''}`}>
+                {item.columns.map((column, ci) => (
+                  <div className="nav__col" key={ci}>
+                    {column.map((section, si) => (
+                      <div className="nav__grp" key={section.heading || si}>
+                        {section.heading && <h4>{section.heading}</h4>}
+                        {section.links.map(([label, href]) => (
+                          <a key={href} href={abs(href)}>{label}</a>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 ))}
@@ -147,7 +168,7 @@ export default function Header() {
           {NAV.map((item) => (
             <div className="hdr__mgroup" key={item.label}>
               <div className="hdr__mlabel">{item.label}</div>
-              {item.groups.flatMap((g) => g.links).map(([label, href]) => (
+              {item.columns.flat().flatMap((section) => section.links).map(([label, href]) => (
                 <a key={href} href={abs(href)}>{label}</a>
               ))}
             </div>

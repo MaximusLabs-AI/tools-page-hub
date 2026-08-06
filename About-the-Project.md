@@ -109,7 +109,7 @@ Earlier revisions of this app lived directly at `/tools/*`, which collided with 
 
 **That collision no longer exists.** Now that the app is mounted at `/resources/ai-tool-directory`, it never touches `/tools/*` at all — Webflow keeps that whole namespace, including all four free tools and any future ones, with zero coordination needed. The reserved-slug guard was removed from both `cloudflare-worker-tools.js` and `sanity-schema/tool.ts`.
 
-> **New watch-item instead:** `/resources/*` is **not** exclusively owned by this app — Webflow already serves other content there (e.g. `/resources/reports` for Industry Reports). The worker/route pattern must match the **full** `/resources/ai-tool-directory` prefix, never a bare `/resources*`, or it will hijack those other pages.
+> **New watch-item instead:** `/resources/*` is **not** exclusively owned by this app — Webflow already serves other content there: `/resources/reports` (Industry Reports) and, as of the nav redesign, `/resources/free-tools/<slug>` (the four Webflow-hosted free tools, moved there from their old `/tools/<slug>` path). The worker/route pattern must match the **full** `/resources/ai-tool-directory` prefix, never a bare `/resources*`, or it will hijack those other pages.
 
 ---
 
@@ -180,9 +180,9 @@ Provisioning the Vercel origin itself (whatever hostname the Worker fetches from
 2. **Add a Worker Route** on the `maximuslabs.ai` zone (Workers → Routes) — just one:
    - `www.maximuslabs.ai/resources/ai-tool-directory*`
    - **Never** a bare `www.maximuslabs.ai/resources*` — that would swallow `/resources/reports` and any other existing Webflow content under `/resources/`.
-3. **Webflow side:** nothing to build — Webflow keeps serving `/`, `/resources/reports`, `/tools/<free-tool>`, and everything else, untouched.
-4. **Link into it from Webflow:** point the "AI Tool Directory" item in the Resources → Tools nav dropdown at `https://www.maximuslabs.ai/resources/ai-tool-directory` (the collection page). The "Free AI Tools" links in that same dropdown stay pointed at their existing `/tools/<slug>` Webflow pages, unaffected.
-5. **Test after cutover:** load `maximuslabs.ai/resources/ai-tool-directory` (collection — confirm it's styled, since assets ride the same route), a tool review page under it, `/resources/reports` (must be unchanged Webflow content), and a `/tools/<free-tool>` page (must still be Webflow, unaffected since this app no longer touches `/tools/*` at all).
+3. **Webflow side:** nothing to build — Webflow keeps serving `/`, `/resources/reports`, `/resources/free-tools/<slug>`, and everything else, untouched.
+4. **Link into it from Webflow:** point the "AI Tool Directory" item in the Resources → Tools nav dropdown at `https://www.maximuslabs.ai/resources/ai-tool-directory` (the collection page). The "Free AI Tools" links in that same dropdown stay pointed at their `/resources/free-tools/<slug>` Webflow pages, unaffected.
+5. **Test after cutover:** load `maximuslabs.ai/resources/ai-tool-directory` (collection — confirm it's styled, since assets ride the same route), a tool review page under it, `/resources/reports` (must be unchanged Webflow content), and `/resources/free-tools/<slug>` (must still be Webflow, unaffected since the route pattern only matches `/resources/ai-tool-directory`).
 
 > **Failure mode to watch:** if pages render **unstyled** through the proxy, the `/resources/ai-tool-directory*` route isn't attached at all — since assets ride the same single route as the pages, there's no separate asset route to check.
 > **Second failure mode to watch:** if `/resources/reports` (or other existing `/resources/*` Webflow pages) start showing the tools app, a route was added as a bare `/resources*` pattern instead of the full `/resources/ai-tool-directory*`.
@@ -211,7 +211,7 @@ Full step-by-step with checkboxes: **[Worker-Setup-Checklist.md](Worker-Setup-Ch
 | Public mount | `www.maximuslabs.ai/resources/ai-tool-directory` — a **subdirectory**, not a subdomain (via `basePath` — covers pages AND assets) |
 | Asset path | `/resources/ai-tool-directory/_next/*` (same prefix as pages, no separate `assetPrefix`) |
 | Webflow `/tools/*` | Untouched — this app no longer lives there; no reserved-slug guard needed |
-| Watch-item | `/resources/*` also serves other Webflow pages (e.g. `/resources/reports`) — always match the full `/resources/ai-tool-directory` prefix, never bare `/resources*` |
+| Watch-item | `/resources/*` also serves other Webflow pages (`/resources/reports`, `/resources/free-tools/<slug>`) — always match the full `/resources/ai-tool-directory` prefix, never bare `/resources*` |
 | Sanity | project `asrqfhiu`, dataset `production` |
 | Studio | `maximuslabs-tools-hub.sanity.studio` |
 | Catalog | 31 tools, 13 categories |

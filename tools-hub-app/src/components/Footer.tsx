@@ -63,10 +63,10 @@ const COLUMNS: Group[][] = [
     {
       heading: 'Tools',
       links: [
-        ['AI Content Humanizer', '/tools/ai-content-humanizer'],
-        ['AI Content Optimizer', '/tools/ai-content-optimizer'],
-        ['AI Crawlability Checker', '/tools/ai-crawlability-checker'],
-        ['LLM Text Generator', '/tools/llms-txt-generator'],
+        ['AI Content Humanizer', '/resources/free-tools/ai-content-humanizer'],
+        ['AI Content Optimizer', '/resources/free-tools/ai-content-optimizer'],
+        ['AI Crawlability Checker', '/resources/free-tools/ai-crawlability-checker'],
+        ['LLM Text Generator', '/resources/free-tools/llms-txt-generator'],
       ],
     },
   ],

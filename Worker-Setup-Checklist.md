@@ -74,13 +74,13 @@ Load each of these on the **real domain** and confirm:
 | `https://www.maximuslabs.ai/resources/ai-tool-directory/stacks` | Stack Builder page from the app |
 | `https://www.maximuslabs.ai/resources/ai-tool-directory/methodology` | Static policy page from the app |
 | `https://www.maximuslabs.ai/resources/reports` | Existing Webflow page (Industry Reports) — **must be unaffected**; proves the route isn't swallowing the rest of `/resources/` |
-| `https://www.maximuslabs.ai/tools/ai-content-humanizer` | Still the Webflow free-tool page — unaffected, this app never touches `/tools/*` anymore |
+| `https://www.maximuslabs.ai/resources/free-tools/ai-content-humanizer` | Still the Webflow free-tool page — a sibling of `/resources/ai-tool-directory`, not a child of it; **must be unaffected** |
 | `https://www.maximuslabs.ai/anything-unrelated` | Normal Webflow page (proves the Worker doesn't swallow unrelated paths) |
 
 - [ ] Collection page loads styled at the new path
 - [ ] A tool review page loads styled
 - [ ] `/resources/reports` still shows its normal Webflow content
-- [ ] The Webflow free tools at `/tools/*` are unaffected
+- [ ] `/resources/free-tools/<slug>` still shows its normal Webflow content
 - [ ] An unrelated page (e.g. the homepage) is unaffected
 
 ---
@@ -114,7 +114,7 @@ npx sanity deploy
 |---|---|
 | Worker returns "ORIGIN env var is not set" | `[vars] ORIGIN` missing from `wrangler.toml` (or the dashboard Variables tab) |
 | Page loads with no CSS/styling | The `/resources/ai-tool-directory*` route isn't attached to the Worker at all (this one route covers assets too) |
-| `/resources/reports` (or other existing Webflow `/resources/*` pages) now show the Next app | A route was added as bare `/resources*` instead of `/resources/ai-tool-directory*` — fix the route pattern |
+| `/resources/reports` or `/resources/free-tools/*` (or other existing Webflow `/resources/*` pages) now show the Next app | A route was added as bare `/resources*` instead of `/resources/ai-tool-directory*` — fix the route pattern |
 | 522/523 error on any proxied path | Your `ORIGIN` host isn't actually reachable — check however you provisioned it |
 | Changes to the worker script don't show up | Forgot to `wrangler deploy` (or re-save in the dashboard) after editing |
 | Links on the page point to the old `/tools/...` paths | Old cached build — confirm the Vercel deployment includes the `basePath` change in `next.config.mjs` |
